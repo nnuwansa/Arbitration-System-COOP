@@ -451,14 +451,14 @@ const DistrictUnpaidCasesPage = () => {
 
   <!-- ══ BOTTOM SUMMARY ══
        Image shows 3 right-column rows after deductions:
-         ශේෂී මුදල     රු :   10,848.00
+         ඉතිරි මුදල     රු :   10,848.00
          පොළිය        රු :      532.00
          අයවිමට ඇති මුදල රු : 11,380.00
   ══ -->
   <table class="ft" style="margin-top:3px;">
     <tr>
       <td class="lbl"></td>
-      <td class="cur bold" style="white-space:nowrap;">ශේෂී මුදල </td>
+      <td class="cur bold" style="white-space:nowrap;">ඉතිරි මුදල </td>
       <td class="cur">රු :</td>
       <td class="val" style="text-align:right; border-bottom:1px dotted #555;">${fmt(remainingAmount)}</td>
     </tr>
