@@ -319,25 +319,38 @@ const ApprovedSubmissionsPage = () => {
                           {borrower.arbitrationNumber || "-"}
                         </td>
                         <td>{borrower.assignedOfficerName || "-"}</td>
-                        <td>
-                          {borrower.status === "decision-given" ? (
-                            <button
-                              onClick={() => {
-                                setSelectedBorrower(borrower);
-                                setShowDecisionModal(true);
-                              }}
-                              className="btn btn-sm btn-success"
-                              style={{ borderRadius: "8px" }}
-                            >
-                              <Eye size={16} className="me-1" />
-                              තීන්දුව බලන්න
-                            </button>
-                          ) : (
-                            <span className="badge bg-secondary">
-                              තීන්දුවක් ලබා දී නැත
-                            </span>
-                          )}
-                        </td>
+                        <td
+                            className="py-3"
+                            style={{
+                              borderRight: "1px solid rgba(0, 0, 0, 0.05)",
+                            }}
+                          >
+                            {borrower.arbitrationDecision || borrower.status === "decision-given" ? (
+                              <button
+                                onClick={() => {
+                                  setSelectedDecisionView(borrower);
+                                  setShowDecisionViewModal(true);
+                                }}
+                                className="btn btn-sm btn-success"
+                                style={{
+                                  borderRadius: "10px",
+                                  border: "2px solid rgba(16, 185, 129, 0.3)",
+                                }}
+                              >
+                                <Eye size={14} className="me-1" />
+                                තීන්දුව බලන්න
+                              </button>
+                            ) : (
+                              <span
+                                className="badge bg-secondary bg-opacity-25 text-secondary px-3 py-2"
+                                style={{
+                                  border: "1px solid rgba(108, 117, 125, 0.2)",
+                                }}
+                              >
+                                තීන්දුවක් ලබා දී නැත
+                              </span>
+                            )}
+                          </td>
                         <td>
                           <button
                             onClick={() => {

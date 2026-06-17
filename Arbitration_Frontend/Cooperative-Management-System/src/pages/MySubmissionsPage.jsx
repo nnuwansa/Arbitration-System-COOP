@@ -339,13 +339,14 @@ const MySubmissionsPage = () => {
                               {borrower.assignedOfficerName || "-"}
                             </span>
                           </td>
+                          
                           <td
                             className="py-3"
                             style={{
                               borderRight: "1px solid rgba(0, 0, 0, 0.05)",
                             }}
                           >
-                            {borrower.status === "decision-given" ? (
+                            {borrower.arbitrationDecision || borrower.status === "decision-given" ? (
                               <button
                                 onClick={() => {
                                   setSelectedDecisionView(borrower);
