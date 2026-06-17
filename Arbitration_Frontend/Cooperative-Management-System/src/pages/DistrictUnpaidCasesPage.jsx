@@ -225,320 +225,337 @@ const DistrictUnpaidCasesPage = () => {
     return payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
   };
 
-  //   const generateLetter = (caseData) => {
-  //     const letterHTML = `
-  // <!DOCTYPE html>
-  // <html>
-  // <head>
-  //     <meta charset='utf-8'>
-  //     <title>නඩු ලිපිය</title>
-  //     <style>
-  //         @page { size: A4; margin: 2cm; }
-  //         body { font-family: 'FM Abhaya', 'Noto Sans Sinhala', 'Iskoola Pota', Arial, sans-serif; font-size: 11pt; line-height: 1.6; }
-  //         .header { text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 20px; }
-  //         .content { margin: 20px 0; }
-  //         .field { margin: 10px 0; }
-  //         .label { font-weight: bold; }
-  //     </style>
-  // </head>
-  // <body>
-  //     <div class="header">නඩු විස්තර ලිපිය</div>
-  //     <div class="content">
-  //         <div class="field"><span class="label">තීරක අංකය:</span> ${
-  //           caseData.arbitrationNumber || "-"
-  //         }</div>
-  //         <div class="field"><span class="label">ණයගැතියාගේ නම:</span> ${
-  //           caseData.borrowerName
-  //         }</div>
-  //         <div class="field"><span class="label">ලිපිනය:</span> ${
-  //           caseData.borrowerAddress
-  //         }</div>
-  //         <div class="field"><span class="label">ණය අංකය:</span> ${
-  //           caseData.loanNumber
-  //         }</div>
-  //         <div class="field"><span class="label">ණය මුදල:</span> රු. ${parseFloat(
-  //           caseData.loanAmount
-  //         ).toLocaleString("si-LK")}</div>
-  //         <div class="field"><span class="label">සමිතිය:</span> ${
-  //           caseData.societyName
-  //         }</div>
-  //         <div class="field"><span class="label">උසාවිය:</span> ${
-  //           caseData.assignedCourtName || "-"
-  //         }</div>
-  //         <div class="field"><span class="label">පැවරූ දිනය:</span> ${
-  //           caseData.legalAssignmentDate
-  //             ? new Date(caseData.legalAssignmentDate).toLocaleDateString("si-LK")
-  //             : "-"
-  //         }</div>
-  //         ${
-  //           caseData.judgmentDate
-  //             ? `<div class="field"><span class="label">නඩු දිනය:</span> ${new Date(
-  //                 caseData.judgmentDate
-  //               ).toLocaleDateString("si-LK")}</div>`
-  //             : ""
-  //         }
-  //         ${
-  //           caseData.judgmentNumber
-  //             ? `<div class="field"><span class="label">නඩු අංකය:</span> ${caseData.judgmentNumber}</div>`
-  //             : ""
-  //         }
-  //         ${
-  //           caseData.judgmentResult
-  //             ? `<div class="field"><span class="label">නඩු තීන්දුව:</span> ${caseData.judgmentResult}</div>`
-  //             : ""
-  //         }
-  //     </div>
-  // </body>
-  // </html>`;
-
-  //     const blob = new Blob(["\ufeff", letterHTML], {
-  //       type: "application/msword;charset=utf-8",
-  //     });
-  //     const url = URL.createObjectURL(blob);
-  //     const link = document.createElement("a");
-  //     link.href = url;
-  //     link.download = `නඩු_ලිපිය_${caseData.arbitrationNumber || "document"}.doc`;
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //     URL.revokeObjectURL(url);
-  //     alert("ලිපිය Word ලියවිල්ලක් ලෙස බාගත වේ");
-  //   };
-
-  const generateLetter = (caseData) => {
+ const generateLetter = (caseData) => {
     const currentDate = new Date().toLocaleDateString("en-GB");
 
-    const loanAmount = parseFloat(
-      caseData.proposedLoanBalance || caseData.outstandingLoanAmount || 0,
-    );
-    const interest = parseFloat(
-      caseData.proposedLoanInterest || caseData.interest || 0,
-    );
+    const loanAmount = parseFloat(caseData.proposedLoanBalance || caseData.outstandingLoanAmount || 0);
+    const interest = parseFloat(caseData.proposedLoanInterest || caseData.interest || 0);
     const stationeryFees = parseFloat(caseData.stationeryFees || 0);
     const deductLoan = parseFloat(caseData.deductionsFromLoanAmount || 0);
-    const deductInterest = parseFloat(
-      caseData.deductionsFromInterestAmount || 0,
-    );
+    const deductInterest = parseFloat(caseData.deductionsFromInterestAmount || 0);
     const courtCharges = parseFloat(caseData.courtCharges || 0);
     const rebateDeductions = parseFloat(caseData.rebateDeductions || 0);
     const bondAndInterest = parseFloat(caseData.bondAndInterest || 0);
     const otherRebate = parseFloat(caseData.otherRebateDeductions || 0);
-    const totalDeductions =
-      deductLoan +
-      deductInterest +
-      courtCharges +
-      rebateDeductions +
-      bondAndInterest +
-      otherRebate;
+    const totalDeductions = deductLoan + deductInterest + courtCharges + rebateDeductions + bondAndInterest + otherRebate;
     const subtotal = loanAmount + interest + stationeryFees;
     const forwardInterest = parseFloat(caseData.forwardInterest || 0);
     const remainingAmount = subtotal - totalDeductions;
     const totalClaim = remainingAmount + forwardInterest;
+
+    const fmt = (n) => n.toLocaleString("en-US", { minimumFractionDigits: 2 });
+
+    const decisionDateStr = caseData.decisionDate
+      ? new Date(caseData.decisionDate).toLocaleDateString("en-GB")
+      : "......................";
+
+    const legalDateStr = caseData.legalAssignmentDate
+      ? new Date(caseData.legalAssignmentDate).toLocaleDateString("en-GB")
+      : ".......................";
 
     const letterHTML = `<!DOCTYPE html>
 <html lang="si">
 <head>
   <meta charset="UTF-8">
   <style>
-    @page { size: A4; margin: 0.5in 0.6in; }
-    body { font-family: 'FM Abhaya', 'Noto Sans Sinhala', Arial, sans-serif; font-size: 9pt; line-height: 1.3; margin: 0; padding: 0; }
-    .header-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 9pt; }
-    .title { text-align: center; font-weight: bold; margin: 10px 0 12px 0; font-size: 10pt; text-decoration: underline; }
-    .content { text-align: justify; margin: 6px 0; font-size: 9pt; line-height: 1.35; }
-    .section-header { text-align: center; font-weight: bold; margin: 2px 0 2px 0; font-size: 9pt; }
-    .financial-table { width: 100%; margin: 2px 0; border-collapse: collapse; font-size: 9pt; }
-    .financial-table td { padding: 0px 4px; border: none; line-height: 1.05; }
-    .financial-table .label { width: 60%; text-align: left; }
-    .financial-table .currency { width: 10%; text-align: left; }
-    .financial-table .value { width: 30%; border-bottom: 1px dotted #666; text-align: right; }
-    .total-row { font-weight: bold; border-top: 1px solid #000; }
-    .guarantor-list { margin: 8px 0 8px 20px; font-size: 9pt; line-height: 1.4; }
-    .guarantor-item { margin: 4px 0; }
-    .signature-section { margin-top: 20px; font-size: 9pt; }
-    .signature-row { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 10px; }
-    .copies-section { margin-top: 15px; font-size: 8.5pt; line-height: 1.3; }
-    .copies-section p { margin: 2px 0; }
-    p { margin: 4px 0; }
+    @page { size: A4; margin: 0.45in 0.55in; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'FM Abhaya', 'Noto Sans Sinhala', Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.3;
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+
+ 
+
+    /* ── Title ── */
+    .title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 10pt;
+      text-decoration: underline;
+      margin: 8px 0 10px 0;
+    }
+
+    /* ── Body paragraphs ── */
+    .content {
+      text-align: justify;
+      font-size: 9pt;
+      line-height: 1.35;
+      margin: 4px 0;
+    }
+    .content p { margin: 3px 0; }
+
+    /* ── Section label (අඩුකිරීම්) ── */
+    .section-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 9pt;
+      margin: 4px 0 2px 0;
+    }
+
+    /* ══════════════════════════════════
+       FINANCIAL TABLES
+       Layout:  [label 58%] [රු : 8%] [value 34%]
+       The "value" cell has a dotted underline to
+       match the original printed form lines.
+    ══════════════════════════════════ */
+    .ft {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+      margin: 1px 0;
+    }
+    .ft td { padding: 1px 3px; border: none; line-height: 1.15; vertical-align: bottom; }
+    .ft .lbl  { width: 58%; text-align: left; }
+    .ft .cur  { width: 8%;  text-align: left; white-space: nowrap; }
+    .ft .val  { width: 34%; text-align: right; border-bottom: 1px dotted #555; }
+    .ft .bold { font-weight: bold; }
+    .ft .val.double-line {
+      border-top: 1px solid #000;
+      border-bottom: 2px solid #000;
+    }
+    .ft .val.single-line {
+      border-bottom: 1px solid #000;
+    }
+
+    /* ── Defendant two-column table ── */
+    .def-table { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 6px 0; }
+    .def-table td { padding: 2px 4px; vertical-align: top; }
+
+    /* ── Signature ── */
+    .sig-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 9pt; }
+    .sig-table td { padding: 2px 4px; vertical-align: top; }
+
+    /* ── Copies ── */
+    .copies { margin-top: 12px; font-size: 8.5pt; line-height: 1.35; }
+    .copies p { margin: 1px 0; }
+
+    p { margin: 3px 0; }
   </style>
 </head>
 <body>
-  <div class="header-row">
-    <div>තීරක අංකය: ${
-      caseData.arbitrationNumber || "..................................."
-    }</div>
-    <div>නඩු අංකය: ${
-      caseData.judgmentNumber ||
-      ".................................................."
-    }</div>
-  </div>
+
+  
+  
+  <!-- ══ HEADER ══ -->
+<table style="width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:8px;">
+  <tr>
+    <td style="text-align:left; padding:0;">
+      තීරක අංකය: ${caseData.arbitrationNumber || "..................................."}
+    </td>
+    <td style="text-align:right; padding:0;">
+      නඩු අංකය: ${caseData.judgmentNumber || ".................................................."}
+    </td>
+  </tr>
+</table>
+
+  <!-- ══ INTRO ══ -->
   <div class="content">
     <p>1993අංක 04 දරණ සමුපකාර සමිති (සංශෝධිත) ප්‍රඥ්ප්තියෙන් සංශෝධිත මධ්‍යම පළාත් සභාවේ 1990 අංක 10 දරණ සමුපකාර සමිති ප්‍රඥ්ප්තියෙන් 59 (1) ඇ වගන්තිය යටතේ නිකුත් කරනු ලබන</p>
   </div>
+
+  <!-- ══ TITLE ══ -->
   <div class="title">තීරක තීන්දු සහතිකය</div>
+
+  <!-- ══ ADDRESSEE + BODY ══ -->
   <div class="content">
-    <p>${
-      caseData.assignedCourtName || "....................."
-    } මහෙස්ත්‍රාත්තුමා වෙතටයි,</p>
-    <p>1993අංක 04 දරණ සමුපකාර සමිති (සංශෝධිත) ප්‍රඥ්ප්තියෙන් සංශෝධිත මධ්‍යම පළාත් සභාවේ 1990 අංක 10 දරණ සමුපකාර සමිති ප්‍රඥ්ප්තියෙන් 59 (1) ඇ වගන්තියෙන් මධ්‍යම පළාත් සභාවේ සමිති රෙජිස්ටාර් වෙත පැවරුණු බලතල අනුව හා අංක 2258/55 හා ${
-      caseData.legalAssignmentDate
-        ? new Date(caseData.legalAssignmentDate).toLocaleDateString("en-GB")
-        : "......................."
-    } දිනැති ශ්‍රී ලංකා ප්‍රජාතාන්ත්‍රීක සමාජවාදී ජනරජයේ ගැසට් පත්‍රයේ සඳහන් නිවේදනයෙන් සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් ${
-      caseData.user?.name || "................................."
-    } වන ම වෙත පැවරී ඇති බලතල ප්‍රකාරව මෙසේ සහතික කරමි. ඉහත කී සමුපකාර සමිති ප්‍රඥ්ප්තිය යටතේ ${
-      caseData.decisionDate
-        ? new Date(caseData.decisionDate).toLocaleDateString("en-GB")
-        : "................................."
-    } වෙනි දින ලබා දී ඇත්තා වූ ද, මීට අමුණා ඇති තීරක තීන්දුව අනුව</p>
+    <p>${caseData.assignedCourtName || "........................"} මහෙස්ත්‍රාත්තුමා වෙතටයි,</p>
+    <p>1993අංක 04 දරණ සමුපකාර සමිති (සංශෝධිත) ප්‍රඥ්ප්තියෙන් සංශෝධිත මධ්‍යම පළාත් සභාවේ 1990 අංක 10 දරණ සමුපකාර සමිති ප්‍රඥ්ප්තියෙන් 59 (1) ඇ වගන්තියෙන් මධ්‍යම පළාත් සභාවේ සමිති රෙජිස්ටාර් වෙත පැවරුණු බලතල අනුව හා අංක ......................... හා ................................ දිනැති ශ්‍රී ලංකා ප්‍රජාතාන්ත්‍රීක සමාජවාදී ජනරජයේ ගැසට් පත්‍රයේ සඳහන් නිවේදනයෙන් සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් ......................................................... වන මා වෙත පැවරී ඇති බලතල ප්‍රකාරව මෙසේ සහතික කරමි. ඉහත කී සමුපකාර සමිති ප්‍රඥ්ප්තිය යටතේ ${decisionDateStr} වෙනි දින ලබා දී ඇත්තා වූ ද, මීට අමුණා ඇති තීරක තීන්දුව අනුව</p>
   </div>
-  <table class="financial-table">
-    <tr><td class="label">මුල් මුදල</td><td class="currency">රු :</td><td class="value">${loanAmount.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">පොළිය</td><td class="currency">රු :</td><td class="value">${interest.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">බේරුම්කරණ වියදම්</td><td class="currency">රු :</td><td class="value">${stationeryFees.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr class="total-row"><td class="label">එකතුව</td><td class="currency">රු:</td><td class="value">${subtotal.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-  </table>
+
+  <table class="ft">
+  <colgroup>
+    <col style="width:55%">
+    <col style="width:11%">
+    <col style="width:34%">
+  </colgroup>
+  <tr>
+    <td class="lbl">මුල් මුදල</td>
+    <td class="cur">රු :</td>
+    <td class="val">${fmt(loanAmount)}</td>
+  </tr>
+  <tr>
+    <td class="lbl">පොළිය</td>
+    <td class="cur">රු :</td>
+    <td class="val">${fmt(interest)}</td>
+  </tr>
+  <tr>
+    <td class="lbl">බේරුම්කරණ වියදම්</td>
+    <td class="cur">රු :</td>
+    <td class="val">${fmt(stationeryFees)}</td>
+  </tr>
+  <tr>
+    <td class="lbl" style="text-align:right; padding-right:6px;">එකතුව</td>
+    <td class="cur bold">රු :</td>
+    <td class="val single-line bold">${fmt(subtotal)}</td>
+  </tr>
+  <tr>
+    <td class="lbl" style="font-size:8.5pt;">
+      ප්‍රදානය දුන් ${decisionDateStr} දින සිට ${currentDate} දින දක්වා
+      <span style="padding-left:10px">පොළිය</span>
+    </td>
+    <td class="cur">රු :</td>
+    <td class="val">${forwardInterest ? fmt(forwardInterest) : ""}</td>
+  </tr>
+  <tr>
+    <td class="lbl" style="text-align:right; font-weight:bold; padding-right:6px;">එකතුව</td>
+    <td class="cur bold">රු :</td>
+    <td class="val single-line bold">${fmt(subtotal + forwardInterest)}</td>
+  </tr>
+</table>
+
+  <!-- ══ DEDUCTIONS SECTION ══ -->
   <div class="section-header">අඩුකිරීම්</div>
-  <table class="financial-table">
-    <tr><td class="label">මුල් මුදලින්</td><td class="currency">රු :</td><td class="value">${deductLoan.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">පොළිය</td><td class="currency">රු :</td><td class="value">${deductInterest.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">නඩු ගාස්තු</td><td class="currency">රු :</td><td class="value">${courtCharges.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">හිලව් කිරීම්</td><td class="currency">රු :</td><td class="value">${rebateDeductions.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">ඇප හා පොළිය</td><td class="currency">රු :</td><td class="value">${bondAndInterest.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr><td class="label">වෙනත් හිලව් කිරීම්</td><td class="currency">රු :</td><td class="value">${otherRebate.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr class="total-row"><td class="label">එකතුව</td><td class="currency">රු :</td><td class="value">${totalDeductions.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
+
+  <table class="ft">
+    <tr>
+      <td class="lbl">මුල් මුදලින්</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(deductLoan)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">පොළිය</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(deductInterest)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">නඩු ගාස්තු</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(courtCharges)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">හිලව් කිරීම්</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(rebateDeductions)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">ඇප හා පොළිය</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(bondAndInterest)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">වෙනත් හිලව් කිරීම්</td>
+      <td class="cur">රු :</td>
+      <td class="val">${fmt(otherRebate)}</td>
+    </tr>
+    <tr>
+      <td class="lbl bold" style="text-align:right; padding-right:6px;">එකතුව</td>
+      <td class="cur bold">රු :</td>
+      <td class="val single-line bold">${fmt(totalDeductions)}</td>
+    </tr>
   </table>
-  <table class="financial-table" style="margin-top: 2px;">
-    <tr><td class="label">${
-      caseData.decisionDate
-        ? new Date(caseData.decisionDate).toLocaleDateString("en-GB")
-        : "................"
-    } දින සිට ${currentDate} දින දක්වා මුල් මුදලට ${
-      caseData.forwardInterestRate || "..."
-    }% බැගින් පොළිය</td><td class="currency">රු :</td><td class="value">${forwardInterest.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
-    <tr class="total-row"><td class="label">අයවීමට ඇති මුදල</td><td class="currency">රු :</td><td class="value">${totalClaim.toLocaleString(
-      "en-US",
-      { minimumFractionDigits: 2 },
-    )}</td></tr>
+
+  <!-- ══ BOTTOM SUMMARY ══
+       Image shows 3 right-column rows after deductions:
+         ශේෂී මුදල     රු :   10,848.00
+         පොළිය        රු :      532.00
+         අයවිමට ඇති මුදල රු : 11,380.00
+  ══ -->
+  <table class="ft" style="margin-top:3px;">
+    <tr>
+      <td class="lbl"></td>
+      <td class="cur bold" style="white-space:nowrap;">ශේෂී මුදල </td>
+      <td class="cur">රු :</td>
+      <td class="val" style="text-align:right; border-bottom:1px dotted #555;">${fmt(remainingAmount)}</td>
+    </tr>
+    <tr>
+      <td class="lbl" style="font-size:8.5pt;">
+        ${decisionDateStr} දින සිට ${currentDate} දින දක්වා මුල් මුදලට ${caseData.forwardInterestRate || "........"} % බැගින් 
+      </td>
+      <td class="cur bold" style="white-space:nowrap;">පොළිය</td>
+      <td class="cur">රු :</td>
+      <td class="val" style="text-align:right; border-bottom:1px dotted #555;">${forwardInterest ? fmt(forwardInterest) : ""}</td>
+    </tr>
+    <tr>
+      <td class="lbl"></td>
+      <td class="cur bold" style="white-space:nowrap;">අයවිමට ඇති මුදල </td>
+      <td class="cur">රු :</td>
+      <td class="val double-line bold" style="text-align:right;">${fmt(totalClaim)}</td>
+    </tr>
   </table>
-  <div class="content" style="margin-top: 6px;">
+
+  <!-- ══ DEFENDANTS ══ -->
+  <div class="content" style="margin-top:8px;">
     <p>එකී මුදල පහත සඳහන් විත්තිකරුවන්ගෙන් අයවීමට ඇත.</p>
   </div>
-  <table style="width: 100%; margin: 8px 0; border-collapse: collapse; font-size: 9pt;">
+
+  <table class="def-table">
     <tr>
-      <td style="width: 48%; vertical-align: top; padding-right: 20px;">
-        <div style="margin-bottom: 5px;"><strong>විත්තිකරු</strong></div>
-        <div style="margin: 3px 0;">1. ${
-          caseData.guarantor1Name || "................................."
-        }</div>
-        <div style="margin: 3px 0;">2. ${
-          caseData.guarantor2Name || "................................."
-        }</div>
-        <div style="margin: 3px 0;">3. ${
-          caseData.borrowerName || "................................."
-        }</div>
+      <td style="width:48%; padding-right:16px;">
+        <div style="font-weight:bold; margin-bottom:4px;">විත්තිකරු</div>
+        <div style="margin:2px 0;">1. ${caseData.guarantor1Name || "................................."}</div>
+        <div style="margin:2px 0;">2. ${caseData.guarantor2Name || "................................."}</div>
+        <div style="margin:2px 0;">3. ${caseData.borrowerName  || "................................."}</div>
       </td>
-      <td style="width: 52%; vertical-align: top; padding-left: 20px;">
-        <div style="margin-bottom: 5px;"><strong>පදිංචි ලිපිනය</strong></div>
-        <div style="margin: 3px 0;">${
-          caseData.guarantor1Address || "................................."
-        }</div>
-        <div style="margin: 3px 0;">${
-          caseData.guarantor2Address || "................................."
-        }</div>
-        <div style="margin: 3px 0;">${
-          caseData.borrowerAddress || "................................."
-        }</div>
+      <td style="width:52%; padding-left:16px;">
+        <div style="font-weight:bold; margin-bottom:4px;">පදිංචි ලිපිනය</div>
+        <div style="margin:2px 0;">${caseData.guarantor1Address || "................................."}</div>
+        <div style="margin:2px 0;">${caseData.guarantor2Address || "................................."}</div>
+        <div style="margin:2px 0;">${caseData.borrowerAddress  || "................................."}</div>
       </td>
     </tr>
   </table>
-  <div class="content" style="margin-top: 12px;">
-    <p>මෙම අයවිය යුතු මුදලින් කිසිවක් ගෙවා නොමැති බැවින් ඉහත සඳහන් ප්‍රඥප්තියේ 59(4) වගන්තිය අනුව එකී මුදල් අයකර ම වෙත එවන මෙන් ඉල්ලමි.</p>
+
+  <!-- ══ REQUEST PARAGRAPH ══ -->
+  <div class="content" style="margin-top:10px;">
+    <p>මෙම අයවිය යුතු මුදලින් කිසිවක් ගෙවා නොමැති බැවින් ඉහත සඳහන් ප්‍රඥප්තියේ 59(4) වගන්තිය අනුව එකී මුදල් අයකර මා වෙත එවන මෙන් ඉල්ලමි.</p>
   </div>
-  <div class="signature-section">
-    <table style="width: 100%; border-collapse: collapse;">
-      <tr>
-        <td style="width: 35%; vertical-align: top;">
-          <p>...................................</p>
-          <p>දිනය</p>
-        </td>
-        <td style="width: 65%; vertical-align: top; text-align: center;">
-          <p>...................................</p>
-          <p>සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස්</p>
-          <p style="margin-top: 5px;">මධ්‍යම පළාත</p>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="copies-section">
+
+  <!-- ══ SIGNATURE ══ -->
+  <table class="sig-table">
+    <tr>
+      <td style="width:35%;">
+        <p>...................................</p>
+        <p>දිනය</p>
+      </td>
+      <td style="width:65%; text-align:center;">
+        <p>...................................</p>
+        <p>සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස්</p>
+        <p style="margin-top:4px;">මධ්‍යම පළාත</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ══ COPIES ══ -->
+  <div class="copies">
     <p><strong>පිටපත් විත්තිකරුවන්ට ප්‍රඥප්තියේ 59(4) වගන්තිය යටතේ,</strong></p>
     <p>1. ${caseData.guarantor1Name || "..........."}</p>
     <p>2. ${caseData.guarantor2Name || "..........."}</p>
-    <p>3. ${caseData.borrowerName || "................"}</p>
+    <p>3. ${caseData.borrowerName   || "................"}</p>
     <br/>
     <p><strong>පැමිණිලිකරු</strong></p>
     <p>1. ${caseData.societyName || "society name"}</p>
     <p>2. උසාවි නිලධාරි</p>
     <p>3. කාර්යාල පිටපත</p>
   </div>
+
 </body>
 </html>`;
 
+    // ── Download as .doc ──
     const blob = new Blob(["\ufeff", letterHTML], {
       type: "application/msword;charset=utf-8",
     });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `තීරක_තීන්දු_සහතිකය_${
-      caseData.arbitrationNumber || "document"
-    }.doc`;
+    link.download = `තීරක_තීන්දු_සහතිකය_${caseData.arbitrationNumber || "document"}.doc`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
+    // ── Open print preview ──
     const printWindow = window.open("", "_blank");
     printWindow.document.write(letterHTML);
     printWindow.document.close();
 
     alert("තීරක තීන්දු සහතිකය Word ලියවිල්ලක් ලෙස බාගත වේ");
-  };
+};
 
   const loadLegalOfficers = async () => {
     try {

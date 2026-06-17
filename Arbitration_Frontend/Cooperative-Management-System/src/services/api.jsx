@@ -25,10 +25,10 @@ const api = {
 
     if (token) {
       headers.Authorization = `Bearer ${token}`;
-      console.log(
-        "- Authorization header added:",
-        headers.Authorization.substring(0, 20) + "...",
-      );
+      // console.log(
+      //   "- Authorization header added:",
+      //   headers.Authorization.substring(0, 20) + "...",
+      // );
     } else {
       console.warn("⚠️ No token available for this request!");
     }
@@ -39,7 +39,7 @@ const api = {
         headers,
       });
 
-      console.log(`📊 Response status: ${response.status}`);
+      // console.log(`📊 Response status: ${response.status}`);
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({}));
@@ -484,6 +484,16 @@ const api = {
         }
         return new Blob([JSON.stringify(response)], { type: "text/csv" });
       }),
+  changeOwnPassword: async (passwordData) => {
+    const response = await api.post("/users/change-password", passwordData);
+    return response.data;
+  },
+
+  changeOwnPassword: (passwordData) =>
+    api.request("/users/change-password", {
+      method: "POST",
+      body: JSON.stringify(passwordData),
+    }),
 };
 
 export default api;

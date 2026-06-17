@@ -9,6 +9,7 @@ import {
   Building,
   LogOut,
   UserCog,
+  Settings,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -254,6 +255,7 @@ const Sidebar = () => {
       <div className="p-3 flex-grow-1 mb-2" style={{ paddingTop: "1.5rem" }}>
         <nav className="nav flex-column">
           <NavItem to="/" icon={Home} label="මුල් පිටුව" />
+          
 
           {isSocietyAdmin && (
             <>
@@ -272,6 +274,7 @@ const Sidebar = () => {
                 icon={FileText}
                 label="තිරක නිලධාරී තීන්දුවට අනුව ගෙවීම් නොකරන ලද ණයගැතියන්"
               />
+              <NavItem to="/settings" icon={Settings} label="සැකසුම්" />
             </>
           )}
 
@@ -294,6 +297,7 @@ const Sidebar = () => {
                 icon={CheckCircle}
                 label=" තීරකකරණය සදහා අනුමත කළ ඉදිරිපත් කිරීම්"
               />
+              <NavItem to="/settings" icon={Settings} label="සැකසුම්" />
             </>
           )}
 
@@ -305,6 +309,7 @@ const Sidebar = () => {
                 label="මාගේ පවරා ඇති ණයගැතියන්"
                 badge={counts.officerBorrowers}
               />
+              <NavItem to="/settings" icon={Settings} label="සැකසුම්" />
             </>
           )}
 
@@ -316,6 +321,7 @@ const Sidebar = () => {
                 label="නීතිමය ක්‍රියාවලිය සදහා පැවරී ඇති ණයගැතියන් "
                 badge={counts.legalOfficerCases}
               />
+              <NavItem to="/settings" icon={Settings} label="සැකසුම්" />
             </>
           )}
 
@@ -389,6 +395,8 @@ const Sidebar = () => {
                 icon={UserCog}
                 label={isProvincialAdmin ? "පරිශීලකයින්" : "පරිශීලක කළමනාකරණය"}
               />
+
+              <NavItem to="/settings" icon={Settings} label="සැකසුම්" />
             </>
           )}
         </nav>

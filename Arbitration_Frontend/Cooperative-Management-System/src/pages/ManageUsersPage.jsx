@@ -212,9 +212,7 @@ const ManageUsersPage = () => {
             <Users className="me-2" />
             පරිශීලක කළමනාකරණය (User Management)
           </h2>
-          <small className="text-muted">
-            Logged in as: {user?.name} ({user?.roles?.join(", ")})
-          </small>
+          
         </div>
       </div>
 

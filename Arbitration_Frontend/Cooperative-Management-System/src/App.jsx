@@ -20,8 +20,8 @@ import DistrictSubmissionsPage from "./pages/DistrictSubmissionsPage";
 // import ProvincialOverviewPage from "./pages/ProvincialOverviewPage";
 import ManageSocietiesPage from "./pages/ManageSocietiesPage";
 import ManageOfficersPage from "./pages/ManageOfficersPage";
-import ManageUsersPage from "./pages/ManageUsersPage"; // NEW
-import ManageLegalOfficersPage from "./pages/ManageLegalOfficersPage"; // NEW
+import ManageUsersPage from "./pages/ManageUsersPage"; 
+import ManageLegalOfficersPage from "./pages/ManageLegalOfficersPage"; 
 import ManageCourtsPage from "./pages/ManageCourtsPage";
 import LegalOfficerCasesPage from "./pages/LegalOfficerCasesPage";
 import UnpaidCasesPage from "./pages/UnpaidCasesPage";
@@ -29,6 +29,7 @@ import ProvincialUnpaidCasesPage from "./pages/ProvincialUnpaidCasesPage";
 
 import DistrictUnpaidCasesPage from "./pages/DistrictUnpaidCasesPage";
 import UnpaidCasesApprovalPage from "./pages/UnpaidCasesApprovalPage";
+import SettingsPage from "./pages/SettingsPage"; 
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -133,7 +134,9 @@ function AppRoutes() {
           <Route path="manage-courts" element={<ManageCourtsPage />} />
           {/* NEW: User Management Route */}
           <Route path="manage-users" element={<ManageUsersPage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
+
       </Routes>
     </Router>
   );

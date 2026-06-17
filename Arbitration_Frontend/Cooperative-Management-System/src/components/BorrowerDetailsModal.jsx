@@ -36,6 +36,16 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
   const loanReduction = originalLoanAmount - proposedLoanBalance;
   const interestReduction = originalInterest - proposedLoanInterest;
 
+  // Format date helper
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    return new Date(dateStr).toLocaleDateString("si-LK", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <>
       <div
@@ -129,32 +139,92 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                       </p>
                       <p className="mb-2">
                         <strong>ණය මුදල:</strong> රු.{" "}
-                        {parseFloat(borrower.loanAmount).toLocaleString(
-                          "si-LK"
-                        )}
+                        {parseFloat(borrower.loanAmount).toLocaleString("si-LK")}
                       </p>
                       <p className="mb-2">
-                        <strong>හිඟ ණය ශේෂය</strong> රු.{" "}
-                        {parseFloat(
-                          borrower.outstandingLoanAmount || 0
-                        ).toLocaleString("si-LK")}
+                        <strong>හිඟ ණය ශේෂය:</strong> රු.{" "}
+                        {parseFloat(borrower.outstandingLoanAmount || 0).toLocaleString("si-LK")}
                       </p>
-                      <p className="mb-2">
+
+                      {/* ⭐ Interest with time period */}
+                      <div className="mb-2">
                         <strong>හිඟ ණය පොළිය:</strong> රු.{" "}
                         {parseFloat(borrower.interest).toLocaleString("si-LK")}
-                      </p>
+                        {/* Show time period inline if available */}
+                        {(borrower.interestFromDate || borrower.interestToDate) && (
+                          <div
+                            className="mt-1 px-2 py-1 rounded d-inline-flex align-items-center ms-2"
+                            style={{ backgroundColor: "#e8f5e9", fontSize: "12px", color: "#2e7d32" }}
+                          >
+                            <Calendar size={11} className="me-1" />
+                            {borrower.interestFromDate
+                              ? new Date(borrower.interestFromDate).toLocaleDateString("si-LK")
+                              : "?"}{" "}
+                            සිට{" "}
+                            {borrower.interestToDate
+                              ? new Date(borrower.interestToDate).toLocaleDateString("si-LK")
+                              : "?"}
+                          </div>
+                        )}
+                      </div>
+
                       <p className="mb-2">
                         <strong>පොලී අනුපාතය:</strong> {borrower.interestRate}%
                       </p>
                       <p className="mb-0">
                         <strong>ලිපිද්‍රව්‍ය හා නඩු ගාස්තු:</strong> රු.{" "}
-                        {parseFloat(
-                          borrower.stationeryFees || 0
-                        ).toLocaleString("si-LK")}
+                        {parseFloat(borrower.stationeryFees || 0).toLocaleString("si-LK")}
                       </p>
                     </div>
                   </div>
                 </div>
+
+                {/* ⭐ Interest Period Card - shown if period is set */}
+                {(borrower.interestFromDate || borrower.interestToDate) && (
+                  <div className="col-12">
+                    <div
+                      className="card border-0 shadow-sm"
+                      style={{
+                        borderRadius: "8px",
+                        background: "linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%)",
+                        border: "1px solid #a5d6a7 !important",
+                      }}
+                    >
+                      <div className="card-body py-3">
+                        <h6 className="fw-bold mb-3 d-flex align-items-center" style={{ color: "#2e7d32" }}>
+                          <Calendar size={16} className="me-2" />
+                          පොලිය ගණනය කිරීමේ කාල සීමාව
+                        </h6>
+                        <div className="row g-3">
+                          <div className="col-md-4">
+                            <small className="text-muted d-block mb-1">ආරම්භ දිනය:</small>
+                            <div className="fw-bold" style={{ color: "#1b5e20" }}>
+                              {formatDate(borrower.interestFromDate)}
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <small className="text-muted d-block mb-1">අවසාන දිනය:</small>
+                            <div className="fw-bold" style={{ color: "#1b5e20" }}>
+                              {formatDate(borrower.interestToDate)}
+                            </div>
+                          </div>
+                          {borrower.interestFromDate && borrower.interestToDate && (
+                            <div className="col-md-4">
+                              <small className="text-muted d-block mb-1">කාල සීමාව:</small>
+                              <div className="fw-bold" style={{ color: "#1b5e20" }}>
+                                {Math.round(
+                                  (new Date(borrower.interestToDate) - new Date(borrower.interestFromDate)) /
+                                    (1000 * 60 * 60 * 24)
+                                )}{" "}
+                                දින
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Total Amount Card */}
                 <div className="col-md-12">
@@ -162,8 +232,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                     className="card border-0 shadow-sm"
                     style={{
                       borderRadius: "8px",
-                      background:
-                        "linear-gradient(135deg, #c5aef3 0%, #ebc4fc 100%)",
+                      background: "linear-gradient(135deg, #c5aef3 0%, #ebc4fc 100%)",
                     }}
                   >
                     <div className="card-body">
@@ -173,42 +242,28 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                       </h6>
                       <div className="row g-3">
                         <div className="col-md-3">
-                          <small className="text-white-80 d-block mb-1">
-                            හිඟ ණය ශේෂය:
-                          </small>
+                          <small className="text-white-80 d-block mb-1">හිඟ ණය ශේෂය:</small>
                           <div className="fw-bold text-white fs-5">
                             රු.{" "}
-                            {parseFloat(
-                              borrower.outstandingLoanAmount || 0
-                            ).toLocaleString("si-LK")}
+                            {parseFloat(borrower.outstandingLoanAmount || 0).toLocaleString("si-LK")}
                           </div>
                         </div>
                         <div className="col-md-3">
-                          <small className="text-white-80 d-block mb-1">
-                            හිඟ ණය පොළිය:
-                          </small>
+                          <small className="text-white-80 d-block mb-1">හිඟ ණය පොළිය:</small>
                           <div className="fw-bold text-white fs-5">
                             රු.{" "}
-                            {parseFloat(borrower.interest || 0).toLocaleString(
-                              "si-LK"
-                            )}
+                            {parseFloat(borrower.interest || 0).toLocaleString("si-LK")}
                           </div>
                         </div>
                         <div className="col-md-3">
-                          <small className="text-white-80 d-block mb-1">
-                            ලිපිද්‍රව්‍ය හා නඩු ගාස්තු:
-                          </small>
+                          <small className="text-white-80 d-block mb-1">ලිපිද්‍රව්‍ය හා නඩු ගාස්තු:</small>
                           <div className="fw-bold text-white fs-5">
                             රු.{" "}
-                            {parseFloat(
-                              borrower.stationeryFees || 0
-                            ).toLocaleString("si-LK")}
+                            {parseFloat(borrower.stationeryFees || 0).toLocaleString("si-LK")}
                           </div>
                         </div>
                         <div className="col-md-3">
-                          <small className="text-white-80 d-block mb-1">
-                            මුළු වටිනාකම:
-                          </small>
+                          <small className="text-white-80 d-block mb-1">මුළු වටිනාකම:</small>
                           <div className="fw-bold text-white fs-5">
                             රු. {calculateTotal().toLocaleString("si-LK")}
                           </div>
@@ -220,10 +275,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
 
                 {/* Guarantor 1 */}
                 <div className="col-md-6">
-                  <div
-                    className="card h-100 border-0 shadow-sm"
-                    style={{ borderRadius: "8px" }}
-                  >
+                  <div className="card h-100 border-0 shadow-sm" style={{ borderRadius: "8px" }}>
                     <div className="card-header bg-warning text-dark">
                       <h6 className="mb-0 fw-bold">
                         <User size={18} className="me-2" />
@@ -231,31 +283,17 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                       </h6>
                     </div>
                     <div className="card-body">
-                      <p className="mb-2">
-                        <strong>නම:</strong> {borrower.guarantor1Name}
-                      </p>
-                      <p className="mb-2">
-                        <strong>NIC අංකය:</strong>{" "}
-                        {borrower.guarantor1NIC || "-"}
-                      </p>
-                      <p className="mb-2">
-                        <strong>ලිපිනය:</strong>{" "}
-                        {borrower.guarantor1Address || "-"}
-                      </p>
-                      <p className="mb-0">
-                        <strong>සාමාජික අංකය:</strong>{" "}
-                        {borrower.guarantor1MembershipNo}
-                      </p>
+                      <p className="mb-2"><strong>නම:</strong> {borrower.guarantor1Name}</p>
+                      <p className="mb-2"><strong>NIC අංකය:</strong> {borrower.guarantor1NIC || "-"}</p>
+                      <p className="mb-2"><strong>ලිපිනය:</strong> {borrower.guarantor1Address || "-"}</p>
+                      <p className="mb-0"><strong>සාමාජික අංකය:</strong> {borrower.guarantor1MembershipNo}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Guarantor 2 */}
                 <div className="col-md-6">
-                  <div
-                    className="card h-100 border-0 shadow-sm"
-                    style={{ borderRadius: "8px" }}
-                  >
+                  <div className="card h-100 border-0 shadow-sm" style={{ borderRadius: "8px" }}>
                     <div className="card-header bg-warning text-dark">
                       <h6 className="mb-0 fw-bold">
                         <User size={18} className="me-2" />
@@ -263,21 +301,10 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                       </h6>
                     </div>
                     <div className="card-body">
-                      <p className="mb-2">
-                        <strong>නම:</strong> {borrower.guarantor2Name}
-                      </p>
-                      <p className="mb-2">
-                        <strong>NIC අංකය:</strong>{" "}
-                        {borrower.guarantor2NIC || "-"}
-                      </p>
-                      <p className="mb-2">
-                        <strong>ලිපිනය:</strong>{" "}
-                        {borrower.guarantor2Address || "-"}
-                      </p>
-                      <p className="mb-0">
-                        <strong>සාමාජික අංකය:</strong>{" "}
-                        {borrower.guarantor2MembershipNo}
-                      </p>
+                      <p className="mb-2"><strong>නම:</strong> {borrower.guarantor2Name}</p>
+                      <p className="mb-2"><strong>NIC අංකය:</strong> {borrower.guarantor2NIC || "-"}</p>
+                      <p className="mb-2"><strong>ලිපිනය:</strong> {borrower.guarantor2Address || "-"}</p>
+                      <p className="mb-0"><strong>සාමාජික අංකය:</strong> {borrower.guarantor2MembershipNo}</p>
                     </div>
                   </div>
                 </div>
@@ -285,10 +312,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                 {/* Arbitration Details */}
                 {borrower.arbitrationNumber && (
                   <div className="col-12">
-                    <div
-                      className="card border-0 shadow-sm"
-                      style={{ borderRadius: "8px" }}
-                    >
+                    <div className="card border-0 shadow-sm" style={{ borderRadius: "8px" }}>
                       <div className="card-header bg-info text-white">
                         <h6 className="mb-0 fw-bold">
                           <CreditCard size={18} className="me-2" />
@@ -298,37 +322,23 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                       <div className="card-body">
                         <div className="row g-3">
                           <div className="col-md-3">
-                            <small className="text-muted d-block mb-1">
-                              තීරක අංකය:
-                            </small>
-                            <div className="fw-bold text-danger fs-5">
-                              {borrower.arbitrationNumber}
-                            </div>
+                            <small className="text-muted d-block mb-1">තීරක අංකය:</small>
+                            <div className="fw-bold text-danger fs-5">{borrower.arbitrationNumber}</div>
                           </div>
                           <div className="col-md-3">
-                            <small className="text-muted d-block mb-1">
-                              තීරක නිලධාරියා:
-                            </small>
-                            <div className="fw-semibold">
-                              {borrower.assignedOfficerName || "-"}
-                            </div>
+                            <small className="text-muted d-block mb-1">තීරක නිලධාරියා:</small>
+                            <div className="fw-semibold">{borrower.assignedOfficerName || "-"}</div>
                           </div>
                           <div className="col-md-3">
-                            <small className="text-muted d-block mb-1">
-                              පවරා ඇති දිනය:
-                            </small>
+                            <small className="text-muted d-block mb-1">පවරා ඇති දිනය:</small>
                             <div className="fw-semibold">
                               {borrower.assignedDate
-                                ? new Date(
-                                    borrower.assignedDate
-                                  ).toLocaleDateString("si-LK")
+                                ? new Date(borrower.assignedDate).toLocaleDateString("si-LK")
                                 : "-"}
                             </div>
                           </div>
                           <div className="col-md-3">
-                            <small className="text-muted d-block mb-1">
-                              තීරක ගාස්තු:
-                            </small>
+                            <small className="text-muted d-block mb-1">තීරක ගාස්තු:</small>
                             <div>
                               {borrower.arbitrationFeePaid ? (
                                 <span className="badge bg-success">
@@ -349,19 +359,13 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                   </div>
                 )}
 
-                {/* ⭐ ENHANCED: Decision Details with Financial Breakdown */}
+                {/* Decision Details */}
                 {borrower.arbitrationDecision && (
                   <div className="col-12">
-                    <div
-                      className="card border-0 shadow-lg"
-                      style={{ borderRadius: "8px" }}
-                    >
+                    <div className="card border-0 shadow-lg" style={{ borderRadius: "8px" }}>
                       <div
                         className="card-header text-white"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                        }}
+                        style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}
                       >
                         <h6 className="mb-0 fw-bold">
                           <FileText size={18} className="me-2" />
@@ -369,7 +373,6 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                         </h6>
                       </div>
                       <div className="card-body">
-                        {/* Decision Dates */}
                         <div className="row g-3 mb-4">
                           <div className="col-md-6">
                             <div className="card border-primary">
@@ -379,15 +382,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   තීරණ දුන් දිනය
                                 </small>
                                 <div className="fw-bold text-primary fs-5">
-                                  {borrower.decisionDate
-                                    ? new Date(
-                                        borrower.decisionDate
-                                      ).toLocaleDateString("si-LK", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                      })
-                                    : "-"}
+                                  {formatDate(borrower.decisionDate)}
                                 </div>
                               </div>
                             </div>
@@ -400,15 +395,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   අභියාචනය කල යුතු දිනය
                                 </small>
                                 <div className="fw-bold text-danger fs-5">
-                                  {borrower.appealDueDate
-                                    ? new Date(
-                                        borrower.appealDueDate
-                                      ).toLocaleDateString("si-LK", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                      })
-                                    : "-"}
+                                  {formatDate(borrower.appealDueDate)}
                                 </div>
                               </div>
                             </div>
@@ -436,29 +423,18 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   <td className="fw-semibold">ණය ශේෂය</td>
                                   <td className="text-end fw-bold text-primary">
                                     රු.{" "}
-                                    {originalLoanAmount.toLocaleString(
-                                      "si-LK",
-                                      { minimumFractionDigits: 2 }
-                                    )}
+                                    {originalLoanAmount.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end fw-bold text-success">
                                     රු.{" "}
-                                    {proposedLoanBalance.toLocaleString(
-                                      "si-LK",
-                                      { minimumFractionDigits: 2 }
-                                    )}
+                                    {proposedLoanBalance.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end">
                                     {loanReduction > 0 ? (
                                       <span className="badge bg-success fs-6">
-                                        <TrendingDown
-                                          size={12}
-                                          className="me-1"
-                                        />
+                                        <TrendingDown size={12} className="me-1" />
                                         රු.{" "}
-                                        {loanReduction.toLocaleString("si-LK", {
-                                          minimumFractionDigits: 2,
-                                        })}
+                                        {loanReduction.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                       </span>
                                     ) : (
                                       <span className="text-muted">-</span>
@@ -466,92 +442,71 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="fw-semibold">පොළිය</td>
+                                  <td className="fw-semibold">
+                                    පොළිය
+                                    {(borrower.interestFromDate || borrower.interestToDate) && (
+                                      <span
+                                        className="ms-2 badge"
+                                        style={{ backgroundColor: "#e8f5e9", color: "#2e7d32", fontWeight: "normal", fontSize: "11px" }}
+                                      >
+                                        <Calendar size={10} className="me-1" />
+                                        {borrower.interestFromDate
+                                          ? new Date(borrower.interestFromDate).toLocaleDateString("si-LK")
+                                          : "?"}{" "}
+                                        -{" "}
+                                        {borrower.interestToDate
+                                          ? new Date(borrower.interestToDate).toLocaleDateString("si-LK")
+                                          : "?"}
+                                      </span>
+                                    )}
+                                  </td>
                                   <td className="text-end fw-bold text-warning">
                                     රු.{" "}
-                                    {originalInterest.toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {originalInterest.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end fw-bold text-success">
                                     රු.{" "}
-                                    {proposedLoanInterest.toLocaleString(
-                                      "si-LK",
-                                      { minimumFractionDigits: 2 }
-                                    )}
+                                    {proposedLoanInterest.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end">
                                     {interestReduction > 0 ? (
                                       <span className="badge bg-success fs-6">
-                                        <TrendingDown
-                                          size={12}
-                                          className="me-1"
-                                        />
+                                        <TrendingDown size={12} className="me-1" />
                                         රු.{" "}
-                                        {interestReduction.toLocaleString(
-                                          "si-LK",
-                                          { minimumFractionDigits: 2 }
-                                        )}
+                                        {interestReduction.toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                       </span>
                                     ) : (
                                       <span className="text-muted">-</span>
                                     )}
                                   </td>
                                 </tr>
-                                {borrower.caseFees &&
-                                  parseFloat(borrower.caseFees) > 0 && (
-                                    <tr>
-                                      <td className="fw-semibold">
-                                        නඩු ගාස්තු
-                                      </td>
-                                      <td className="text-end">-</td>
-                                      <td className="text-end fw-bold text-info">
-                                        රු.{" "}
-                                        {parseFloat(
-                                          borrower.caseFees
-                                        ).toLocaleString("si-LK", {
-                                          minimumFractionDigits: 2,
-                                        })}
-                                      </td>
-                                      <td className="text-end">-</td>
-                                    </tr>
-                                  )}
-                                <tr
-                                  style={{
-                                    backgroundColor: "#f0f9ff",
-                                    borderTop: "3px solid #ddd",
-                                  }}
-                                >
+                                {borrower.caseFees && parseFloat(borrower.caseFees) > 0 && (
+                                  <tr>
+                                    <td className="fw-semibold">නඩු ගාස්තු</td>
+                                    <td className="text-end">-</td>
+                                    <td className="text-end fw-bold text-info">
+                                      රු.{" "}
+                                      {parseFloat(borrower.caseFees).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
+                                    </td>
+                                    <td className="text-end">-</td>
+                                  </tr>
+                                )}
+                                <tr style={{ backgroundColor: "#f0f9ff", borderTop: "3px solid #ddd" }}>
                                   <td className="fw-bold">මුළු මුදල</td>
                                   <td className="text-end fw-bold text-danger fs-5">
                                     රු.{" "}
-                                    {(
-                                      originalLoanAmount + originalInterest
-                                    ).toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {(originalLoanAmount + originalInterest).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end fw-bold text-success fs-5">
                                     රු.{" "}
-                                    {parseFloat(
-                                      borrower.proposedTotalAmount || 0
-                                    ).toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {parseFloat(borrower.proposedTotalAmount || 0).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </td>
                                   <td className="text-end">
                                     {loanReduction + interestReduction > 0 && (
                                       <span className="badge bg-success fs-6">
-                                        <TrendingDown
-                                          size={14}
-                                          className="me-1"
-                                        />
+                                        <TrendingDown size={14} className="me-1" />
                                         රු.{" "}
-                                        {(
-                                          loanReduction + interestReduction
-                                        ).toLocaleString("si-LK", {
-                                          minimumFractionDigits: 2,
-                                        })}
+                                        {(loanReduction + interestReduction).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                       </span>
                                     )}
                                   </td>
@@ -562,12 +517,8 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                         </div>
 
                         {/* Forward Interest */}
-                        {(borrower.forwardInterest ||
-                          borrower.forwardInterestRate) && (
-                          <div
-                            className="alert alert-success mb-3"
-                            style={{ borderRadius: "8px" }}
-                          >
+                        {(borrower.forwardInterest || borrower.forwardInterestRate) && (
+                          <div className="alert alert-success mb-3" style={{ borderRadius: "8px" }}>
                             <h6 className="fw-bold mb-2">
                               <Percent size={16} className="me-2" />
                               ඉදිරියට පොළිය
@@ -575,27 +526,17 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                             <div className="row">
                               {borrower.forwardInterest && (
                                 <div className="col-md-6">
-                                  <small className="d-block">
-                                    ඉදිරියට පොළිය:
-                                  </small>
+                                  <small className="d-block">ඉදිරියට පොළිය:</small>
                                   <strong className="fs-5">
                                     රු.{" "}
-                                    {parseFloat(
-                                      borrower.forwardInterest
-                                    ).toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {parseFloat(borrower.forwardInterest).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </strong>
                                 </div>
                               )}
                               {borrower.forwardInterestRate && (
                                 <div className="col-md-6">
-                                  <small className="d-block">
-                                    ඉදිරියට පොළී අනුපාතය:
-                                  </small>
-                                  <strong className="fs-5">
-                                    {borrower.forwardInterestRate}%
-                                  </strong>
+                                  <small className="d-block">ඉදිරියට පොළී අනුපාතය:</small>
+                                  <strong className="fs-5">{borrower.forwardInterestRate}%</strong>
                                 </div>
                               )}
                             </div>
@@ -603,12 +544,8 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                         )}
 
                         {/* Deductions */}
-                        {(borrower.deductionsFromLoanAmount ||
-                          borrower.deductionsFromInterestAmount) && (
-                          <div
-                            className="alert alert-warning mb-3"
-                            style={{ borderRadius: "8px" }}
-                          >
+                        {(borrower.deductionsFromLoanAmount || borrower.deductionsFromInterestAmount) && (
+                          <div className="alert alert-warning mb-3" style={{ borderRadius: "8px" }}>
                             <h6 className="fw-bold mb-2">
                               <TrendingDown size={16} className="me-2" />
                               ප්‍රදානයේදී කපහැරීම්
@@ -619,11 +556,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   <small className="d-block">ණය මුදලෙන්:</small>
                                   <strong className="fs-5">
                                     රු.{" "}
-                                    {parseFloat(
-                                      borrower.deductionsFromLoanAmount
-                                    ).toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {parseFloat(borrower.deductionsFromLoanAmount).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </strong>
                                 </div>
                               )}
@@ -632,11 +565,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                                   <small className="d-block">පොලියෙන්:</small>
                                   <strong className="fs-5">
                                     රු.{" "}
-                                    {parseFloat(
-                                      borrower.deductionsFromInterestAmount
-                                    ).toLocaleString("si-LK", {
-                                      minimumFractionDigits: 2,
-                                    })}
+                                    {parseFloat(borrower.deductionsFromInterestAmount).toLocaleString("si-LK", { minimumFractionDigits: 2 })}
                                   </strong>
                                 </div>
                               )}
@@ -652,13 +581,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                           </h6>
                           <div
                             className="p-3 bg-light border rounded"
-                            style={{
-                              whiteSpace: "pre-wrap",
-                              maxHeight: "250px",
-                              overflowY: "auto",
-                              fontSize: "14px",
-                              lineHeight: "1.8",
-                            }}
+                            style={{ whiteSpace: "pre-wrap", maxHeight: "250px", overflowY: "auto", fontSize: "14px", lineHeight: "1.8" }}
                           >
                             {borrower.arbitrationDecision}
                           </div>
@@ -673,10 +596,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                   borrower.status === "legal-case" ||
                   borrower.status === "payment-pending") && (
                   <div className="col-12">
-                    <div
-                      className="card border-0 shadow-sm"
-                      style={{ borderRadius: "8px" }}
-                    >
+                    <div className="card border-0 shadow-sm" style={{ borderRadius: "8px" }}>
                       <div className="card-header bg-primary text-white">
                         <h6 className="mb-0 fw-bold">
                           <Scale size={18} className="me-2" />
@@ -692,9 +612,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                             </small>
                             <div className="fw-semibold">
                               {borrower.assignedLegalOfficerName ? (
-                                <span className="badge bg-info fs-6">
-                                  {borrower.assignedLegalOfficerName}
-                                </span>
+                                <span className="badge bg-info fs-6">{borrower.assignedLegalOfficerName}</span>
                               ) : (
                                 <span className="text-muted">-</span>
                               )}
@@ -707,9 +625,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                             </small>
                             <div className="fw-semibold">
                               {borrower.assignedCourtName ? (
-                                <span className="badge bg-secondary fs-6">
-                                  {borrower.assignedCourtName}
-                                </span>
+                                <span className="badge bg-secondary fs-6">{borrower.assignedCourtName}</span>
                               ) : (
                                 <span className="text-muted">- පවරා නැත -</span>
                               )}
@@ -722,28 +638,19 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                             </small>
                             <div className="fw-semibold">
                               {borrower.legalAssignmentDate
-                                ? new Date(
-                                    borrower.legalAssignmentDate
-                                  ).toLocaleDateString("si-LK")
+                                ? new Date(borrower.legalAssignmentDate).toLocaleDateString("si-LK")
                                 : "-"}
                             </div>
                           </div>
-
                           {borrower.status === "payment-pending" && (
                             <div className="col-12">
-                              <div
-                                className="alert alert-warning mb-0"
-                                style={{ borderRadius: "6px" }}
-                              >
-                                <strong>⚠️ ගෙවීම් තත්වය:</strong> තීරණයෙන් පසු
-                                ගෙවීම් සිදු නොකර ඇත
+                              <div className="alert alert-warning mb-0" style={{ borderRadius: "6px" }}>
+                                <strong>⚠️ ගෙවීම් තත්වය:</strong> තීරණයෙන් පසු ගෙවීම් සිදු නොකර ඇත
                                 {borrower.approvedForDistrictDate && (
                                   <div className="mt-2">
                                     <small>
                                       දිස්ත්‍රික් කාර්යාලයට යැවූ දිනය:{" "}
-                                      {new Date(
-                                        borrower.approvedForDistrictDate
-                                      ).toLocaleDateString("si-LK")}
+                                      {new Date(borrower.approvedForDistrictDate).toLocaleDateString("si-LK")}
                                     </small>
                                   </div>
                                 )}
@@ -761,10 +668,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                   <div className="col-12">
                     <div
                       className="card border-warning border-2"
-                      style={{
-                        borderRadius: "6px",
-                        backgroundColor: "#fff8e1",
-                      }}
+                      style={{ borderRadius: "6px", backgroundColor: "#fff8e1" }}
                     >
                       <div className="card-body">
                         <h6 className="card-title fw-bold border-bottom border-warning pb-2 mb-3 d-flex align-items-center text-dark">
@@ -779,9 +683,7 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                             </small>
                             <div className="fw-semibold text-dark">
                               {borrower.judgmentDate
-                                ? new Date(
-                                    borrower.judgmentDate
-                                  ).toLocaleDateString("si-LK")
+                                ? new Date(borrower.judgmentDate).toLocaleDateString("si-LK")
                                 : "-"}
                             </div>
                           </div>
@@ -790,18 +692,12 @@ const BorrowerDetailsModal = ({ show, onClose, borrower }) => {
                               <FileText size={14} className="me-1" />
                               නඩු අංකය:
                             </small>
-                            <div className="fw-bold text-primary fs-6">
-                              {borrower.judgmentNumber || "-"}
-                            </div>
+                            <div className="fw-bold text-primary fs-6">{borrower.judgmentNumber || "-"}</div>
                           </div>
                           <div className="col-md-4">
-                            <small className="text-muted d-block mb-1">
-                              තත්වය:
-                            </small>
+                            <small className="text-muted d-block mb-1">තත්වය:</small>
                             <div>
-                              <span className="badge bg-success fs-6">
-                                නඩු තීන්දුව ලබා දී ඇත
-                              </span>
+                              <span className="badge bg-success fs-6">නඩු තීන්දුව ලබා දී ඇත</span>
                             </div>
                           </div>
                           <div className="col-12 mt-3">
