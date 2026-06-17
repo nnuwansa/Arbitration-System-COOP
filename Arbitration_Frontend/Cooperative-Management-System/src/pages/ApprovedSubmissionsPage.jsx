@@ -3,6 +3,7 @@ import { CheckCircle, AlertCircle, Eye } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import BorrowerDetailsModal from "../components/BorrowerDetailsModal";
+import DecisionViewModal from "../components/DecisionViewModal";
 
 const ApprovedSubmissionsPage = () => {
   const { user } = useAuth();
@@ -11,6 +12,8 @@ const ApprovedSubmissionsPage = () => {
   const [selectedBorrower, setSelectedBorrower] = useState(null);
   const [showDecisionModal, setShowDecisionModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showDecisionViewModal, setShowDecisionViewModal] = useState(false);
+const [selectedDecisionView, setSelectedDecisionView] = useState(null);
 
   useEffect(() => {
     loadApprovedSubmissions();
@@ -383,6 +386,15 @@ const ApprovedSubmissionsPage = () => {
           }}
         />
       )}
+
+      <DecisionViewModal
+        show={showDecisionViewModal}
+        onClose={() => {
+          setShowDecisionViewModal(false);
+          setSelectedDecisionView(null);
+        }}
+        borrower={selectedDecisionView}
+      />
 
       <BorrowerDetailsModal
         show={showDetailsModal}
