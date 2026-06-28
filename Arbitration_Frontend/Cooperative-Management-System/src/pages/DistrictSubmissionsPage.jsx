@@ -207,461 +207,774 @@ const DistrictSubmissionsPage = () => {
     }
   };
 
+  // const generateAssignmentLetter = async (borrower, submissionId) => {
+  //   try {
+  //     // Fetch full submission data to get society name
+  //     const fullSubmission = await api.getSubmissionById(submissionId);
+
+  //     const societyName = fullSubmission.societyName || "සමිතිය";
+
+  //     // District names mapping to Sinhala
+  //     const districtNameMap = {
+  //       Kandy: "මහනුවර",
+  //       Matale: "මාතලේ",
+  //       "Nuwara Eliya": "නුවරඑළිය",
+  //     };
+
+  //     const districtNameEnglish =
+  //       fullSubmission.districtName || borrower.districtName || "Kandy";
+  //     const districtName =
+  //       districtNameMap[districtNameEnglish] || districtNameEnglish;
+
+  //     // Determine title based on loan type
+  //     let titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( ණය මුදල් )";
+  //     if (borrower.loanType === "deposit") {
+  //       titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( තැන්පතු )";
+  //     } else if (borrower.loanType === "multiply") {
+  //       titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( විවිධ )";
+  //     }
+
+  //     // Format today's date
+  //     const today = new Date();
+  //     const year = today.getFullYear();
+  //     const month = String(today.getMonth() + 1).padStart(2, "0");
+  //     const day = String(today.getDate()).padStart(2, "0");
+  //     const dateStr = `${year}.${month}.${day}`;
+
+  //     const doc = new Document({
+  //       styles: {
+  //         default: {
+  //           document: {
+  //             run: { font: "Iskoola Pota", size: 24 }, // 12pt
+  //           },
+  //         },
+  //       },
+  //       sections: [
+  //         {
+  //           properties: {
+  //             page: {
+  //               margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+  //             },
+  //           },
+  //           children: [
+  //             // ============ TOP BORDER ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.LEFT,
+  //               spacing: { before: 0, after: 100 },
+  //               border: {
+  //                 bottom: {
+  //                   color: "000000",
+  //                   space: 1,
+  //                   value: "single",
+  //                   size: 24,
+  //                 },
+  //               },
+  //               children: [],
+  //             }),
+
+  //             // ============ ARBITRATION NUMBER - RIGHT ALIGNED ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.RIGHT,
+  //               spacing: { before: 200, after: 200 },
+  //               children: [
+  //                 new TextRun({
+  //                   text: `තීරක අංකය : ${borrower.arbitrationNumber || "............................"}`,
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //               ],
+  //             }),
+
+  //             // ============ TITLE - CENTERED AND UNDERLINED ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.CENTER,
+  //               spacing: { before: 200, after: 300 },
+  //               children: [
+  //                 new TextRun({
+  //                   text: titleText,
+  //                   font: "Iskoola Pota",
+  //                   size: 24,
+  //                   bold: true,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //               ],
+  //             }),
+
+  //             // ============ MAIN BODY PARAGRAPH ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.JUSTIFIED,
+  //               spacing: { before: 200, after: 200, line: 360 },
+  //               children: [
+  //                 new TextRun({
+  //                   text: "1953 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන) පනතෙහි සංශෝධිත මධ්‍යම පළාත් සභාවේ 1000 අංක 10 දරණ සමුපකාර සමිති ආඥා පනතේ 58 වන වගන්තිය සහ (අ) වෙනි ප්‍රඥප්තියේ 51 වගන්ති හා 53 (1) (ඇ) වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලයන්ත අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ සඳහන් කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලය අනුව මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් ............................ වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text: societyName,
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( නම ) ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text: borrower.borrowerName,
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " ගෙන් සහ ඇපකාර ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text:
+  //                     borrower.guarantor1Name || "............................",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " සහ ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text:
+  //                     borrower.guarantor2Name || "............................",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text: parseFloat(borrower.loanAmount).toLocaleString(
+  //                     "si-LK",
+  //                   ),
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text: `${borrower.interestRate || "...."}%`,
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.SINGLE },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " බැගින් පොලියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //                 new TextRun({
+  //                   text:
+  //                     borrower.assignedOfficerName ||
+  //                     "............................",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                   underline: { type: UnderlineType.DOTTED },
+  //                 }),
+  //                 new TextRun({
+  //                   text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //               ],
+  //             }),
+
+  //             // ============ SIGNATURE SECTION USING TABLE ============
+  //             new Table({
+  //               width: { size: 100, type: WidthType.PERCENTAGE },
+  //               borders: {
+  //                 top: { style: BorderStyle.NONE },
+  //                 bottom: { style: BorderStyle.NONE },
+  //                 left: { style: BorderStyle.NONE },
+  //                 right: { style: BorderStyle.NONE },
+  //                 insideHorizontal: { style: BorderStyle.NONE },
+  //                 insideVertical: { style: BorderStyle.NONE },
+  //               },
+  //               rows: [
+  //                 // Row 1: Department (left) | Signature dots (right)
+  //                 new TableRow({
+  //                   children: [
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.LEFT,
+  //                           spacing: { before: 400, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: "මධ්‍යම පළාත් සමුපකාර සංවර්ධන දෙපාර්තමේන්තුව,",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.RIGHT,
+  //                           spacing: { before: 400, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: "...................................................",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                   ],
+  //                 }),
+
+  //                 // Row 2: Assistant Commissioner (left) | Commissioner title (right)
+  //                 new TableRow({
+  //                   children: [
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.LEFT,
+  //                           spacing: { before: 0, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස්,",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.RIGHT,
+  //                           spacing: { before: 0, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                   ],
+  //                 }),
+
+  //                 // Row 3: District (left) | Deputy Commissioner (right)
+  //                 new TableRow({
+  //                   children: [
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.LEFT,
+  //                           spacing: { before: 0, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: districtName + ".",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.RIGHT,
+  //                           spacing: { before: 0, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: "නියෝජ්‍ය කොමසාරිස්.",
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                   ],
+  //                 }),
+
+  //                 // Row 4: Date (left) | Empty (right)
+  //                 new TableRow({
+  //                   children: [
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [
+  //                         new Paragraph({
+  //                           alignment: AlignmentType.LEFT,
+  //                           spacing: { before: 200, after: 100 },
+  //                           children: [
+  //                             new TextRun({
+  //                               text: `දිනය : ${dateStr}`,
+  //                               font: "Iskoola Pota",
+  //                               size: 22,
+  //                             }),
+  //                           ],
+  //                         }),
+  //                       ],
+  //                     }),
+  //                     new TableCell({
+  //                       width: { size: 50, type: WidthType.PERCENTAGE },
+  //                       borders: {
+  //                         top: { style: BorderStyle.NONE },
+  //                         bottom: { style: BorderStyle.NONE },
+  //                         left: { style: BorderStyle.NONE },
+  //                         right: { style: BorderStyle.NONE },
+  //                       },
+  //                       children: [new Paragraph({ children: [] })],
+  //                     }),
+  //                   ],
+  //                 }),
+  //               ],
+  //             }),
+
+  //             // ============ NOTES SECTION ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.JUSTIFIED,
+  //               spacing: { before: 600, after: 100, line: 340 },
+  //               children: [
+  //                 new TextRun({
+  //                   text: "* ආරවුලේ එක් පාර්ශවයක් ඇපකරුවෙකු නොවන (අ) වගන්තිය කපා හරින්න. මෙහි සම්පූර්ණ නම් සඳහන් කරන්න.",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //               ],
+  //             }),
+
+  //             new Paragraph({
+  //               alignment: AlignmentType.JUSTIFIED,
+  //               spacing: { before: 100, after: 300, line: 340 },
+  //               children: [
+  //                 new TextRun({
+  //                   text: "* මෙහි පැමිණිලිකරුගේ හෝ විත්තිකරුගේ තත්වය දක්වන්න. එනම් ලියාපදිංචි කරන ලද සමිතියක් හෝ හිටපු සාමාජිකයෙකු හෝ හිටපු / මියගිය / සාමාජිකයෙකු වෙනුවෙන් ඉල්ලන්නෙකු හෝ හිටපු කාරක සභාව නිලධාරියෙකු සේවකයෙකු හෝ මියගිය නිලධාරියෙකු / සේවකයෙකු නීත්‍යනුකූල නියෝජිතයෙකු / උරුමක්කාරයෙකු / බලා වයස්කාරයෙකු උරුමක්කරයෙකුගේ භාරකාරයෙකු හෝ / යන වගද ) යම් පාර්ශවයක් ඇපරකරුවෙකු වන විට ලියාපදිංචි වන විට ලියාපදිංචි කළ සමිතියක............................................................................ ඇපරකරුවෙකු යනුවෙන්ද සඳහන් කළ යුතුය.",
+  //                   font: "Iskoola Pota",
+  //                   size: 22,
+  //                 }),
+  //               ],
+  //             }),
+
+  //             // ============ BOTTOM BORDER ============
+  //             new Paragraph({
+  //               alignment: AlignmentType.LEFT,
+  //               spacing: { before: 200, after: 0 },
+  //               border: {
+  //                 top: {
+  //                   color: "000000",
+  //                   space: 1,
+  //                   value: "single",
+  //                   size: 24,
+  //                 },
+  //               },
+  //               children: [],
+  //             }),
+  //           ],
+  //         },
+  //       ],
+  //     });
+
+  //     // Generate blob and trigger download
+  //     const blob = await Packer.toBlob(doc);
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     const safeArbitrationNumber = (
+  //       borrower.arbitrationNumber || "document"
+  //     ).replace(/\//g, "_");
+  //     link.download = `තීරක_නිලධාරි_පත්_කිරීම_${safeArbitrationNumber}.docx`;
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //     URL.revokeObjectURL(url);
+
+  //     alert("තීරක නිලධාරි පත් කිරීමේ ලිපිය බාගත කරන ලදී");
+  //   } catch (error) {
+  //     console.error("Error generating assignment letter:", error);
+  //     alert("ලිපිය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය: " + error.message);
+  //   }
+  // };
+
+  ///
   const generateAssignmentLetter = async (borrower, submissionId) => {
-    try {
-      // Fetch full submission data to get society name
-      const fullSubmission = await api.getSubmissionById(submissionId);
+  try {
+    const fullSubmission = await api.getSubmissionById(submissionId);
+    const societyName = fullSubmission.societyName || "සමිතිය";
 
-      const societyName = fullSubmission.societyName || "සමිතිය";
+    const districtNameMap = {
+      Kandy: "මහනුවර",
+      Matale: "මාතලේ",
+      "Nuwara Eliya": "නුවරඑළිය",
+    };
 
-      // District names mapping to Sinhala
-      const districtNameMap = {
-        Kandy: "මහනුවර",
-        Matale: "මාතලේ",
-        "Nuwara Eliya": "නුවරඑළිය",
-      };
+    const districtNameEnglish =
+      fullSubmission.districtName || borrower.districtName || "Kandy";
+    const districtName =
+      districtNameMap[districtNameEnglish] || districtNameEnglish;
 
-      const districtNameEnglish =
-        fullSubmission.districtName || borrower.districtName || "Kandy";
-      const districtName =
-        districtNameMap[districtNameEnglish] || districtNameEnglish;
+    let titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( ණය මුදල් )";
+    if (borrower.loanType === "deposit") {
+      titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( තැන්පතු )";
+    } else if (borrower.loanType === "multiply") {
+      titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( විවිධ )";
+    }
 
-      // Determine title based on loan type
-      let titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( ණය මුදල් )";
-      if (borrower.loanType === "deposit") {
-        titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( තැන්පතු )";
-      } else if (borrower.loanType === "multiply") {
-        titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( විවිධ )";
-      }
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const dateStr = `${year}.${month}.${day}`;
 
-      // Format today's date
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const day = String(today.getDate()).padStart(2, "0");
-      const dateStr = `${year}.${month}.${day}`;
+    // A4 page in DXA: 11906 wide, 16838 tall
+    // Margins: 1440 each side → content width = 11906 - 1440 - 1440 = 9026 DXA
+    const CONTENT_WIDTH = 9026;
+    const HALF_WIDTH = Math.floor(CONTENT_WIDTH / 2); // 4513 each column
 
-      const doc = new Document({
-        styles: {
-          default: {
-            document: {
-              run: { font: "Iskoola Pota", size: 24 }, // 12pt
-            },
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+    const noBorders = {
+      top: noBorder,
+      bottom: noBorder,
+      left: noBorder,
+      right: noBorder,
+    };
+    const cellMargins = { top: 80, bottom: 80, left: 0, right: 0 };
+
+    const doc = new Document({
+      styles: {
+        default: {
+          document: {
+            run: { font: "Iskoola Pota", size: 22 },
           },
         },
-        sections: [
-          {
-            properties: {
-              page: {
-                margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-              },
+      },
+      sections: [
+        {
+          properties: {
+            page: {
+              size: { width: 11906, height: 16838 }, // A4 portrait
+              margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
             },
-            children: [
-              // ============ TOP BORDER ============
-              new Paragraph({
-                alignment: AlignmentType.LEFT,
-                spacing: { before: 0, after: 100 },
-                border: {
-                  bottom: {
-                    color: "000000",
-                    space: 1,
-                    value: "single",
-                    size: 24,
-                  },
-                },
-                children: [],
-              }),
-
-              // ============ ARBITRATION NUMBER - RIGHT ALIGNED ============
-              new Paragraph({
-                alignment: AlignmentType.RIGHT,
-                spacing: { before: 200, after: 200 },
-                children: [
-                  new TextRun({
-                    text: `තීරක අංකය : ${borrower.arbitrationNumber || "............................"}`,
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                ],
-              }),
-
-              // ============ TITLE - CENTERED AND UNDERLINED ============
-              new Paragraph({
-                alignment: AlignmentType.CENTER,
-                spacing: { before: 200, after: 300 },
-                children: [
-                  new TextRun({
-                    text: titleText,
-                    font: "Iskoola Pota",
-                    size: 24,
-                    bold: true,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                ],
-              }),
-
-              // ============ MAIN BODY PARAGRAPH ============
-              new Paragraph({
-                alignment: AlignmentType.JUSTIFIED,
-                spacing: { before: 200, after: 200, line: 360 },
-                children: [
-                  new TextRun({
-                    text: "1953 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන) පනතෙහි සංශෝධිත මධ්‍යම පළාත් සභාවේ 1000 අංක 10 දරණ සමුපකාර සමිති ආඥා පනතේ 58 වන වගන්තිය සහ (අ) වෙනි ප්‍රඥප්තියේ 51 වගන්ති හා 53 (1) (ඇ) වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලයන්ත අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ සඳහන් කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලය අනුව මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් ............................ වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text: societyName,
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( නම ) ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text: borrower.borrowerName,
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " ගෙන් සහ ඇපකාර ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text:
-                      borrower.guarantor1Name || "............................",
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " සහ ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text:
-                      borrower.guarantor2Name || "............................",
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text: parseFloat(borrower.loanAmount).toLocaleString(
-                      "si-LK",
-                    ),
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text: `${borrower.interestRate || "...."}%`,
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.SINGLE },
-                  }),
-                  new TextRun({
-                    text: " බැගින් පොලියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                  new TextRun({
-                    text:
-                      borrower.assignedOfficerName ||
-                      "............................",
-                    font: "Iskoola Pota",
-                    size: 22,
-                    underline: { type: UnderlineType.DOTTED },
-                  }),
-                  new TextRun({
-                    text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                ],
-              }),
-
-              // ============ SIGNATURE SECTION USING TABLE ============
-              new Table({
-                width: { size: 100, type: WidthType.PERCENTAGE },
-                borders: {
-                  top: { style: BorderStyle.NONE },
-                  bottom: { style: BorderStyle.NONE },
-                  left: { style: BorderStyle.NONE },
-                  right: { style: BorderStyle.NONE },
-                  insideHorizontal: { style: BorderStyle.NONE },
-                  insideVertical: { style: BorderStyle.NONE },
-                },
-                rows: [
-                  // Row 1: Department (left) | Signature dots (right)
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.LEFT,
-                            spacing: { before: 400, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: "මධ්‍යම පළාත් සමුපකාර සංවර්ධන දෙපාර්තමේන්තුව,",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.RIGHT,
-                            spacing: { before: 400, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: "...................................................",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                    ],
-                  }),
-
-                  // Row 2: Assistant Commissioner (left) | Commissioner title (right)
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.LEFT,
-                            spacing: { before: 0, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස්,",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.RIGHT,
-                            spacing: { before: 0, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                    ],
-                  }),
-
-                  // Row 3: District (left) | Deputy Commissioner (right)
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.LEFT,
-                            spacing: { before: 0, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: districtName + ".",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.RIGHT,
-                            spacing: { before: 0, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: "නියෝජ්‍ය කොමසාරිස්.",
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                    ],
-                  }),
-
-                  // Row 4: Date (left) | Empty (right)
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [
-                          new Paragraph({
-                            alignment: AlignmentType.LEFT,
-                            spacing: { before: 200, after: 100 },
-                            children: [
-                              new TextRun({
-                                text: `දිනය : ${dateStr}`,
-                                font: "Iskoola Pota",
-                                size: 22,
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                      new TableCell({
-                        width: { size: 50, type: WidthType.PERCENTAGE },
-                        borders: {
-                          top: { style: BorderStyle.NONE },
-                          bottom: { style: BorderStyle.NONE },
-                          left: { style: BorderStyle.NONE },
-                          right: { style: BorderStyle.NONE },
-                        },
-                        children: [new Paragraph({ children: [] })],
-                      }),
-                    ],
-                  }),
-                ],
-              }),
-
-              // ============ NOTES SECTION ============
-              new Paragraph({
-                alignment: AlignmentType.JUSTIFIED,
-                spacing: { before: 600, after: 100, line: 340 },
-                children: [
-                  new TextRun({
-                    text: "* ආරවුලේ එක් පාර්ශවයක් ඇපකරුවෙකු නොවන (අ) වගන්තිය කපා හරින්න. මෙහි සම්පූර්ණ නම් සඳහන් කරන්න.",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                ],
-              }),
-
-              new Paragraph({
-                alignment: AlignmentType.JUSTIFIED,
-                spacing: { before: 100, after: 300, line: 340 },
-                children: [
-                  new TextRun({
-                    text: "* මෙහි පැමිණිලිකරුගේ හෝ විත්තිකරුගේ තත්වය දක්වන්න. එනම් ලියාපදිංචි කරන ලද සමිතියක් හෝ හිටපු සාමාජිකයෙකු හෝ හිටපු / මියගිය / සාමාජිකයෙකු වෙනුවෙන් ඉල්ලන්නෙකු හෝ හිටපු කාරක සභාව නිලධාරියෙකු සේවකයෙකු හෝ මියගිය නිලධාරියෙකු / සේවකයෙකු නීත්‍යනුකූල නියෝජිතයෙකු / උරුමක්කාරයෙකු / බලා වයස්කාරයෙකු උරුමක්කරයෙකුගේ භාරකාරයෙකු හෝ / යන වගද ) යම් පාර්ශවයක් ඇපරකරුවෙකු වන විට ලියාපදිංචි වන විට ලියාපදිංචි කළ සමිතියක............................................................................ ඇපරකරුවෙකු යනුවෙන්ද සඳහන් කළ යුතුය.",
-                    font: "Iskoola Pota",
-                    size: 22,
-                  }),
-                ],
-              }),
-
-              // ============ BOTTOM BORDER ============
-              new Paragraph({
-                alignment: AlignmentType.LEFT,
-                spacing: { before: 200, after: 0 },
-                border: {
-                  top: {
-                    color: "000000",
-                    space: 1,
-                    value: "single",
-                    size: 24,
-                  },
-                },
-                children: [],
-              }),
-            ],
           },
-        ],
-      });
+          children: [
+            // ── TOP BORDER ──
+            // new Paragraph({
+            //   border: {
+            //     bottom: {
+            //       color: "000000",
+            //       space: 1,
+            //       style: BorderStyle.SINGLE,
+            //       size: 24,
+            //     },
+            //   },
+            //   spacing: { before: 0, after: 120 },
+            //   children: [],
+            // }),
 
-      // Generate blob and trigger download
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      const safeArbitrationNumber = (
-        borrower.arbitrationNumber || "document"
-      ).replace(/\//g, "_");
-      link.download = `තීරක_නිලධාරි_පත්_කිරීම_${safeArbitrationNumber}.docx`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+            // ── ARBITRATION NUMBER (right-aligned) ──
+            new Paragraph({
+              alignment: AlignmentType.RIGHT,
+              spacing: { before: 200, after: 200 },
+              children: [
+                new TextRun({
+                  text: `තීරක අංකය : ${borrower.arbitrationNumber || "............................"}`,
+                  font: "Iskoola Pota",
+                  size: 22,
+                }),
+              ],
+            }),
 
-      alert("තීරක නිලධාරි පත් කිරීමේ ලිපිය බාගත කරන ලදී");
-    } catch (error) {
-      console.error("Error generating assignment letter:", error);
-      alert("ලිපිය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය: " + error.message);
-    }
-  };
+            // ── TITLE (centred, bold, underlined) ──
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 200, after: 300 },
+              children: [
+                new TextRun({
+                  text: titleText,
+                  font: "Iskoola Pota",
+                  size: 24,
+                  bold: true,
+                  underline: { type: UnderlineType.SINGLE },
+                }),
+              ],
+            }),
+
+            // ── MAIN BODY ──
+            new Paragraph({
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: { before: 200, after: 200, line: 360 },
+              children: [
+                new TextRun({ text: "1953 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන) පනතෙහි සංශෝධිත මධ්‍යම පළාත් සභාවේ 1000 අංක 10 දරණ සමුපකාර සමිති ආඥා පනතේ 58 වන වගන්තිය සහ (අ) වෙනි ප්‍රඥප්තියේ 51 වගන්ති හා 53 (1) (ඇ) වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලයන්ත අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ සඳහන් කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලය අනුව මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් .......................................................... වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: societyName, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( සම්පූර්ණ නම ) ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: borrower.borrowerName, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " ගෙන් සහ ඇපකාර ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: borrower.guarantor1Name || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " සහ ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: borrower.guarantor2Name || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: parseFloat(borrower.loanAmount).toLocaleString("si-LK"), font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: `${borrower.interestRate || "...."}%`, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
+                new TextRun({ text: " බැගින් පොලියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ", font: "Iskoola Pota", size: 22 }),
+                new TextRun({ text: borrower.assignedOfficerName || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.DOTTED } }),
+                new TextRun({ text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.", font: "Iskoola Pota", size: 22 }),
+              ],
+            }),
+
+            // ── SIGNATURE TABLE (DXA widths, no borders) ──
+            new Table({
+              width: { size: CONTENT_WIDTH, type: WidthType.DXA },
+              columnWidths: [HALF_WIDTH, CONTENT_WIDTH - HALF_WIDTH],
+              borders: {
+                top: noBorder, bottom: noBorder,
+                left: noBorder, right: noBorder,
+                insideHorizontal: noBorder, insideVertical: noBorder,
+              },
+              rows: [
+                // Row 1: Department | Signature dots
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: { size: HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          spacing: { before: 600, after: 100 },
+                          children: [new TextRun({ text: "සමුපකාර සංවර්ධන දිස්ත්‍රික් කාර්යාලය,", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                    new TableCell({
+                      width: { size: CONTENT_WIDTH - HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.RIGHT,
+                          spacing: { before: 600, after: 100 },
+                          children: [new TextRun({ text: "...................................................", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                // Row 2: Asst Commissioner | Commissioner title
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: { size: HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          spacing: { before: 0, after: 100 },
+                          children: [new TextRun({ text: ".....................................................", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                    new TableCell({
+                      width: { size: CONTENT_WIDTH - HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.RIGHT,
+                          spacing: { before: 0, after: 100 },
+                          children: [new TextRun({ text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                // Row 3: District | Deputy Commissioner
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: { size: HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          spacing: { before: 0, after: 100 },
+                          children: [new TextRun({ text: districtName + ".", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                    new TableCell({
+                      width: { size: CONTENT_WIDTH - HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.RIGHT,
+                          spacing: { before: 0, after: 100 },
+                          children: [new TextRun({ text: "නියෝජ්‍ය කොමසාරිස්.", font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                // Row 4: Date | (empty)
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: { size: HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          spacing: { before: 300, after: 100 },
+                          children: [new TextRun({ text: `දිනය : ${dateStr}`, font: "Iskoola Pota", size: 22 })],
+                        }),
+                      ],
+                    }),
+                    new TableCell({
+                      width: { size: CONTENT_WIDTH - HALF_WIDTH, type: WidthType.DXA },
+                      borders: noBorders,
+                      margins: cellMargins,
+                      children: [new Paragraph({ children: [] })],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+
+            // ── NOTE 1 ──
+            new Paragraph({
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: { before: 600, after: 100, line: 340 },
+              children: [
+                new TextRun({
+                  text: "* ආරවුලේ එක් පාර්ශවයක් ඇපකරුවෙකු නොවන (අ) වගන්තිය කපා හරින්න. මෙහි සම්පූර්ණ නම් සඳහන් කරන්න.",
+                  font: "Iskoola Pota",
+                  size: 20,
+                }),
+              ],
+            }),
+
+            // ── NOTE 2 ──
+            new Paragraph({
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: { before: 100, after: 300, line: 340 },
+              children: [
+                new TextRun({
+                  text: "* මෙහි පැමිණිලිකරුගේ හෝ විත්තිකරුගේ තත්වය දක්වන්න. එනම් ලියාපදිංචි කරන ලද සමිතියක් හෝ හිටපු සාමාජිකයෙකු හෝ හිටපු / මියගිය / සාමාජිකයෙකු වෙනුවෙන් ඉල්ලන්නෙකු හෝ හිටපු කාරක සභාව නිලධාරියෙකු සේවකයෙකු හෝ මියගිය නිලධාරියෙකු / සේවකයෙකු නීත්‍යනුකූල නියෝජිතයෙකු / උරුමක්කාරයෙකු / බලා වයස්කාරයෙකු උරුමක්කරයෙකුගේ භාරකාරයෙකු හෝ / යන වගද ) යම් පාර්ශවයක් ඇපරකරුවෙකු වන විට ලියාපදිංචි වන විට ලියාපදිංචි කළ සමිතියක............................................................................ ඇපරකරුවෙකු යනුවෙන්ද සඳහන් කළ යුතුය.",
+                  font: "Iskoola Pota",
+                  size: 20,
+                }),
+              ],
+            }),
+
+            // ── BOTTOM BORDER ──
+            // new Paragraph({
+            //   border: {
+            //     top: {
+            //       color: "000000",
+            //       space: 1,
+            //       style: BorderStyle.SINGLE,
+            //       size: 24,
+            //     },
+            //   },
+            //   spacing: { before: 200, after: 0 },
+            //   children: [],
+            // }),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const safeArbitrationNumber = (borrower.arbitrationNumber || "document").replace(/\//g, "_");
+    link.download = `තීරක_නිලධාරි_පත්_කිරීම_${safeArbitrationNumber}.docx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    alert("තීරක නිලධාරි පත් කිරීමේ ලිපිය බාගත කරන ලදී");
+  } catch (error) {
+    console.error("Error generating assignment letter:", error);
+    alert("ලිපිය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය: " + error.message);
+  }
+};
+
+
 
   const getStatusBadge = (borrower) => {
     if (!borrower.documentDeficienciesChecked) {
@@ -687,7 +1000,7 @@ const DistrictSubmissionsPage = () => {
     return <span className="badge bg-primary">පවරා ඇත</span>;
   };
 
-  // ⭐ NEW: Decision View Modal Component
+  //  NEW: Decision View Modal Component
   // const DecisionViewModal = ({ show, onClose, borrower }) => {
   //   if (!show || !borrower || !borrower.arbitrationDecision) return null;
 
