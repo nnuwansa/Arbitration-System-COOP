@@ -610,7 +610,7 @@ const ManageOfficersPage = () => {
   const [filteredOfficers, setFilteredOfficers] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 නම අනුව සොයන්න
+  const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedOfficer, setSelectedOfficer] = useState(null);
@@ -813,7 +813,7 @@ const ManageOfficersPage = () => {
               <input
                 type="text"
                 className="form-control form-control-lg"
-                placeholder="තීරක නිලධාරියාගේ නම ටයිප් කරන්න..."
+                placeholder="තීරක නිලධාරියාගේ නම ..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{ borderRadius: "10px" }}
@@ -897,7 +897,7 @@ const ManageOfficersPage = () => {
                   )}
                   <th className="fw-semibold">විද්‍යුත් තැපෑල</th>
                   <th className="fw-semibold">පරිශීලක ගිණුම</th>
-                  <th className="fw-semibold">පැවරුම් තත්වය</th>
+                  {/* <th className="fw-semibold">පැවරුම් තත්වය</th> */}
                   <th className="fw-semibold">ක්‍රියා</th>
                 </tr>
               </thead>
@@ -906,7 +906,7 @@ const ManageOfficersPage = () => {
                   <tr key={o.id}>
                     <td>{index + 1}</td>
                     <td>
-                      {/* ⭐ Show received date with proper formatting */}
+                      {/*  Show received date with proper formatting */}
                       {o.createdAt
                         ? new Date(o.createdAt).toLocaleString("si-LK", {
                             year: "numeric",
@@ -947,13 +947,13 @@ const ManageOfficersPage = () => {
                         </span>
                       )}
                     </td>
-                    <td>
+                    {/* <td>
                       {o.assignedToSocietyId ? (
                         <span className="badge bg-info">පවරා ඇත</span>
                       ) : (
                         <span className="badge bg-success">පවරා නැත</span>
                       )}
-                    </td>
+                    </td> */}
                     <td>
                       <div className="btn-group btn-group-sm">
                         <button
@@ -1158,7 +1158,7 @@ const ManageOfficersPage = () => {
                         )}
                       </p>
                     </div>
-                    <div className="col-md-6 mb-3">
+                    {/* <div className="col-md-6 mb-3">
                       <strong>පැවරුම් තත්වය:</strong>
                       <p>
                         {selectedOfficer.assignedToSocietyId ? (
@@ -1167,7 +1167,7 @@ const ManageOfficersPage = () => {
                           <span className="badge bg-success">පවරා නැත</span>
                         )}
                       </p>
-                    </div>
+                    </div> */}
                     {selectedOfficer.assignedToSocietyId && (
                       <div className="col-md-6 mb-3">
                         <strong>පවරා ඇති සමිතිය:</strong>
