@@ -591,6 +591,7 @@ const ManageSocietiesPage = () => {
                 className="text-white"
               >
                 <tr>
+                   <th className="fw-semibold">#</th>
                   <th className="fw-semibold">Created At</th>
                   <th className="fw-semibold">Society Name</th>
                   {isProvincialAdmin && (
@@ -605,8 +606,9 @@ const ManageSocietiesPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredSocieties.map((s) => (
+                {filteredSocieties.map((s,index) => (
                   <tr key={s.id}>
+                    <td>{index + 1}</td>
                     <td>
                       {s.createdAt
                         ? new Date(s.createdAt).toLocaleString("si-LK", {
