@@ -30,6 +30,7 @@
 //   TextRun,
 //   AlignmentType,
 //   UnderlineType,
+//   RunFonts,
 // } from "docx";
 
 // import { Table, TableRow, TableCell, WidthType, BorderStyle } from "docx";
@@ -207,463 +208,6 @@
 //     }
 //   };
 
-//   // const generateAssignmentLetter = async (borrower, submissionId) => {
-//   //   try {
-//   //     // Fetch full submission data to get society name
-//   //     const fullSubmission = await api.getSubmissionById(submissionId);
-
-//   //     const societyName = fullSubmission.societyName || "සමිතිය";
-
-//   //     // District names mapping to Sinhala
-//   //     const districtNameMap = {
-//   //       Kandy: "මහනුවර",
-//   //       Matale: "මාතලේ",
-//   //       "Nuwara Eliya": "නුවරඑළිය",
-//   //     };
-
-//   //     const districtNameEnglish =
-//   //       fullSubmission.districtName || borrower.districtName || "Kandy";
-//   //     const districtName =
-//   //       districtNameMap[districtNameEnglish] || districtNameEnglish;
-
-//   //     // Determine title based on loan type
-//   //     let titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( ණය මුදල් )";
-//   //     if (borrower.loanType === "deposit") {
-//   //       titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( තැන්පතු )";
-//   //     } else if (borrower.loanType === "multiply") {
-//   //       titleText = "ආරවුලක් නිරවුල් කිරීමට භාර කිරීම ( විවිධ )";
-//   //     }
-
-//   //     // Format today's date
-//   //     const today = new Date();
-//   //     const year = today.getFullYear();
-//   //     const month = String(today.getMonth() + 1).padStart(2, "0");
-//   //     const day = String(today.getDate()).padStart(2, "0");
-//   //     const dateStr = `${year}.${month}.${day}`;
-
-//   //     const doc = new Document({
-//   //       styles: {
-//   //         default: {
-//   //           document: {
-//   //             run: { font: "Iskoola Pota", size: 24 }, // 12pt
-//   //           },
-//   //         },
-//   //       },
-//   //       sections: [
-//   //         {
-//   //           properties: {
-//   //             page: {
-//   //               margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-//   //             },
-//   //           },
-//   //           children: [
-//   //             // ============ TOP BORDER ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.LEFT,
-//   //               spacing: { before: 0, after: 100 },
-//   //               border: {
-//   //                 bottom: {
-//   //                   color: "000000",
-//   //                   space: 1,
-//   //                   value: "single",
-//   //                   size: 24,
-//   //                 },
-//   //               },
-//   //               children: [],
-//   //             }),
-
-//   //             // ============ ARBITRATION NUMBER - RIGHT ALIGNED ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.RIGHT,
-//   //               spacing: { before: 200, after: 200 },
-//   //               children: [
-//   //                 new TextRun({
-//   //                   text: `තීරක අංකය : ${borrower.arbitrationNumber || "............................"}`,
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             // ============ TITLE - CENTERED AND UNDERLINED ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.CENTER,
-//   //               spacing: { before: 200, after: 300 },
-//   //               children: [
-//   //                 new TextRun({
-//   //                   text: titleText,
-//   //                   font: "Iskoola Pota",
-//   //                   size: 24,
-//   //                   bold: true,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             // ============ MAIN BODY PARAGRAPH ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.JUSTIFIED,
-//   //               spacing: { before: 200, after: 200, line: 360 },
-//   //               children: [
-//   //                 new TextRun({
-//   //                   text: "1953 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන) පනතෙහි සංශෝධිත මධ්‍යම පළාත් සභාවේ 1000 අංක 10 දරණ සමුපකාර සමිති ආඥා පනතේ 58 වන වගන්තිය සහ (අ) වෙනි ප්‍රඥප්තියේ 51 වගන්ති හා 53 (1) (ඇ) වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලයන්ත අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ සඳහන් කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලය අනුව මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් ............................ වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: societyName,
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( නම ) ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: borrower.borrowerName,
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " ගෙන් සහ ඇපකාර ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text:
-//   //                     borrower.guarantor1Name || "............................",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " සහ ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text:
-//   //                     borrower.guarantor2Name || "............................",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: parseFloat(borrower.loanAmount).toLocaleString(
-//   //                     "si-LK",
-//   //                   ),
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: `${borrower.interestRate || "...."}%`,
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.SINGLE },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " බැගින් පොලියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text:
-//   //                     borrower.assignedOfficerName ||
-//   //                     "............................",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                   underline: { type: UnderlineType.DOTTED },
-//   //                 }),
-//   //                 new TextRun({
-//   //                   text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             // ============ SIGNATURE SECTION USING TABLE ============
-//   //             new Table({
-//   //               width: { size: 100, type: WidthType.PERCENTAGE },
-//   //               borders: {
-//   //                 top: { style: BorderStyle.NONE },
-//   //                 bottom: { style: BorderStyle.NONE },
-//   //                 left: { style: BorderStyle.NONE },
-//   //                 right: { style: BorderStyle.NONE },
-//   //                 insideHorizontal: { style: BorderStyle.NONE },
-//   //                 insideVertical: { style: BorderStyle.NONE },
-//   //               },
-//   //               rows: [
-//   //                 // Row 1: Department (left) | Signature dots (right)
-//   //                 new TableRow({
-//   //                   children: [
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.LEFT,
-//   //                           spacing: { before: 400, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: "මධ්‍යම පළාත් සමුපකාර සංවර්ධන දෙපාර්තමේන්තුව,",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.RIGHT,
-//   //                           spacing: { before: 400, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: "...................................................",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                   ],
-//   //                 }),
-
-//   //                 // Row 2: Assistant Commissioner (left) | Commissioner title (right)
-//   //                 new TableRow({
-//   //                   children: [
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.LEFT,
-//   //                           spacing: { before: 0, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස්,",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.RIGHT,
-//   //                           spacing: { before: 0, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                   ],
-//   //                 }),
-
-//   //                 // Row 3: District (left) | Deputy Commissioner (right)
-//   //                 new TableRow({
-//   //                   children: [
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.LEFT,
-//   //                           spacing: { before: 0, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: districtName + ".",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.RIGHT,
-//   //                           spacing: { before: 0, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: "නියෝජ්‍ය කොමසාරිස්.",
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                   ],
-//   //                 }),
-
-//   //                 // Row 4: Date (left) | Empty (right)
-//   //                 new TableRow({
-//   //                   children: [
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [
-//   //                         new Paragraph({
-//   //                           alignment: AlignmentType.LEFT,
-//   //                           spacing: { before: 200, after: 100 },
-//   //                           children: [
-//   //                             new TextRun({
-//   //                               text: `දිනය : ${dateStr}`,
-//   //                               font: "Iskoola Pota",
-//   //                               size: 22,
-//   //                             }),
-//   //                           ],
-//   //                         }),
-//   //                       ],
-//   //                     }),
-//   //                     new TableCell({
-//   //                       width: { size: 50, type: WidthType.PERCENTAGE },
-//   //                       borders: {
-//   //                         top: { style: BorderStyle.NONE },
-//   //                         bottom: { style: BorderStyle.NONE },
-//   //                         left: { style: BorderStyle.NONE },
-//   //                         right: { style: BorderStyle.NONE },
-//   //                       },
-//   //                       children: [new Paragraph({ children: [] })],
-//   //                     }),
-//   //                   ],
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             // ============ NOTES SECTION ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.JUSTIFIED,
-//   //               spacing: { before: 600, after: 100, line: 340 },
-//   //               children: [
-//   //                 new TextRun({
-//   //                   text: "* ආරවුලේ එක් පාර්ශවයක් ඇපකරුවෙකු නොවන (අ) වගන්තිය කපා හරින්න. මෙහි සම්පූර්ණ නම් සඳහන් කරන්න.",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.JUSTIFIED,
-//   //               spacing: { before: 100, after: 300, line: 340 },
-//   //               children: [
-//   //                 new TextRun({
-//   //                   text: "* මෙහි පැමිණිලිකරුගේ හෝ විත්තිකරුගේ තත්වය දක්වන්න. එනම් ලියාපදිංචි කරන ලද සමිතියක් හෝ හිටපු සාමාජිකයෙකු හෝ හිටපු / මියගිය / සාමාජිකයෙකු වෙනුවෙන් ඉල්ලන්නෙකු හෝ හිටපු කාරක සභාව නිලධාරියෙකු සේවකයෙකු හෝ මියගිය නිලධාරියෙකු / සේවකයෙකු නීත්‍යනුකූල නියෝජිතයෙකු / උරුමක්කාරයෙකු / බලා වයස්කාරයෙකු උරුමක්කරයෙකුගේ භාරකාරයෙකු හෝ / යන වගද ) යම් පාර්ශවයක් ඇපරකරුවෙකු වන විට ලියාපදිංචි වන විට ලියාපදිංචි කළ සමිතියක............................................................................ ඇපරකරුවෙකු යනුවෙන්ද සඳහන් කළ යුතුය.",
-//   //                   font: "Iskoola Pota",
-//   //                   size: 22,
-//   //                 }),
-//   //               ],
-//   //             }),
-
-//   //             // ============ BOTTOM BORDER ============
-//   //             new Paragraph({
-//   //               alignment: AlignmentType.LEFT,
-//   //               spacing: { before: 200, after: 0 },
-//   //               border: {
-//   //                 top: {
-//   //                   color: "000000",
-//   //                   space: 1,
-//   //                   value: "single",
-//   //                   size: 24,
-//   //                 },
-//   //               },
-//   //               children: [],
-//   //             }),
-//   //           ],
-//   //         },
-//   //       ],
-//   //     });
-
-//   //     // Generate blob and trigger download
-//   //     const blob = await Packer.toBlob(doc);
-//   //     const url = URL.createObjectURL(blob);
-//   //     const link = document.createElement("a");
-//   //     link.href = url;
-//   //     const safeArbitrationNumber = (
-//   //       borrower.arbitrationNumber || "document"
-//   //     ).replace(/\//g, "_");
-//   //     link.download = `තීරක_නිලධාරි_පත්_කිරීම_${safeArbitrationNumber}.docx`;
-//   //     document.body.appendChild(link);
-//   //     link.click();
-//   //     document.body.removeChild(link);
-//   //     URL.revokeObjectURL(url);
-
-//   //     alert("තීරක නිලධාරි පත් කිරීමේ ලිපිය බාගත කරන ලදී");
-//   //   } catch (error) {
-//   //     console.error("Error generating assignment letter:", error);
-//   //     alert("ලිපිය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය: " + error.message);
-//   //   }
-//   // };
-
-//   ///
 //   const generateAssignmentLetter = async (borrower, submissionId) => {
 //   try {
 //     const fullSubmission = await api.getSubmissionById(submissionId);
@@ -711,7 +255,15 @@
 //       styles: {
 //         default: {
 //           document: {
-//             run: { font: "Iskoola Pota", size: 22 },
+//             run: {
+//               font: {
+//                 ascii: "Iskoola Pota",
+//                 eastAsia: "Iskoola Pota",
+//                 hAnsi: "Iskoola Pota",
+//                 cs: "Iskoola Pota",
+//               },
+//               size: 22,
+//             },
 //           },
 //         },
 //       },
@@ -724,20 +276,6 @@
 //             },
 //           },
 //           children: [
-//             // ── TOP BORDER ──
-//             // new Paragraph({
-//             //   border: {
-//             //     bottom: {
-//             //       color: "000000",
-//             //       space: 1,
-//             //       style: BorderStyle.SINGLE,
-//             //       size: 24,
-//             //     },
-//             //   },
-//             //   spacing: { before: 0, after: 120 },
-//             //   children: [],
-//             // }),
-
 //             // ── ARBITRATION NUMBER (right-aligned) ──
 //             new Paragraph({
 //               alignment: AlignmentType.RIGHT,
@@ -745,7 +283,7 @@
 //               children: [
 //                 new TextRun({
 //                   text: `තීරක අංකය : ${borrower.arbitrationNumber || "............................"}`,
-//                   font: "Iskoola Pota",
+//                   font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" },
 //                   size: 22,
 //                 }),
 //               ],
@@ -758,7 +296,7 @@
 //               children: [
 //                 new TextRun({
 //                   text: titleText,
-//                   font: "Iskoola Pota",
+//                   font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" },
 //                   size: 24,
 //                   bold: true,
 //                   underline: { type: UnderlineType.SINGLE },
@@ -771,21 +309,21 @@
 //               alignment: AlignmentType.JUSTIFIED,
 //               spacing: { before: 200, after: 200, line: 360 },
 //               children: [
-//                 new TextRun({ text: "1993 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන)  සංශෝධිත ප්‍රඥප්තියෙන් මධ්‍යම පළාත් සභාවේ 1990 අංක 10 දරණ සමුපකාර සමිති ප්‍රඥප්තියේ  58 වන වගන්තිය සහ (අ)  ප්‍රඥප්තියේ 51 වැකි හා 53 (1) (ඇ) වෙනි වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලතල අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ පළ කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලතල ප්‍රකාර මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් .......................................................... වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: societyName, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( සම්පූර්ණ  නම ) ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: borrower.borrowerName, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " ගෙන් සහ ඇපකාර ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: borrower.guarantor1Name || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " සහ ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: borrower.guarantor2Name || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: parseFloat(borrower.loanAmount).toLocaleString("si-LK"), font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: `${borrower.interestRate || "...."}%`, font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.SINGLE } }),
-//                 new TextRun({ text: " බැගින් පොළියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ", font: "Iskoola Pota", size: 22 }),
-//                 new TextRun({ text: borrower.assignedOfficerName || "............................", font: "Iskoola Pota", size: 22, underline: { type: UnderlineType.DOTTED } }),
-//                 new TextRun({ text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.", font: "Iskoola Pota", size: 22 }),
+//                 new TextRun({ text: "1993 අංක 04 දරණ සමුපකාර සමිති (සංශෝධන)  සංශෝධිත ප්‍රඥප්තියෙන් මධ්‍යම පළාත් සභාවේ 1990 අංක 10 දරණ සමුපකාර සමිති ප්‍රඥප්තියේ  58 වන වගන්තිය සහ (අ)  ප්‍රඥප්තියේ 51 වැකි හා 53 (1) (ඇ) වෙනි වගන්ති යටතේ රෙජිස්ට්‍රාර්වරයා වෙත පැවරී ඇති බලතල අනුව අංක ............................. හා ................................ දරණ ගැසට් පත්‍රයේ පළ කරන ලද නිවේදනයෙන් මා වෙත පවරන ලද බලතල ප්‍රකාර මධ්‍යම පළාතේ සමුපකාර සංවර්ධන සහකාර කොමසාරිස් / නියෝජ්‍ය කොමසාරිස් .......................................................... වන මම, පැමිණිලිකරු වශයෙන් ලියාපදිංචි සමුපකාර සමිතියක් වන ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: societyName, font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " හා විත්තිකරුවන් වශයෙන් එකී සමිතියේ සාමාජිකයින් වන ණයකාර ( සම්පූර්ණ  නම ) ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: borrower.borrowerName, font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " ගෙන් සහ ඇපකාර ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: borrower.guarantor1Name || "............................", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " සහ ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: borrower.guarantor2Name || "............................", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " අතර ණය මුදල වශයෙන් .................................................................. ( රු. ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: parseFloat(borrower.loanAmount).toLocaleString("si-LK"), font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " ) කුත් ප්‍රදානය දෙන දින දක්වා අවුරුදු පතා සියයට ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: `${borrower.interestRate || "...."}%`, font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.SINGLE } }),
+//                 new TextRun({ text: " බැගින් පොළියත්, නඩු වියදමත් ප්‍රදානය දුන් දින සිට මුළු මුදල ගෙවා නිම වන තුරු අවුරුදු පතා මුල් මුදලට සියයට ....................... බැගින් වැඩි දුරටත් පොළියත්, පැමිණිලිකාර සමිතියට අයවිය යුතුද යනුවෙන් පැන නැග තිබෙන ආරවුල මීට අමුණා ඇති ලියවිල්ලෙන් මා වෙත ඉදිරිපත් ලදින්. එම ආරවුල නිරවුල් කොට තීන්දුවක් දීම සදහා ආරවුල් බේරුම්කරු (තීරක තැන ) වශයෙන් ", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
+//                 new TextRun({ text: borrower.assignedOfficerName || "............................", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22, underline: { type: UnderlineType.DOTTED } }),
+//                 new TextRun({ text: " මහතා / මිය / මෙනවිය මෙයින් පත් කරමි.", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 }),
 //               ],
 //             }),
 
@@ -810,7 +348,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.LEFT,
 //                           spacing: { before: 600, after: 100 },
-//                           children: [new TextRun({ text: "සමුපකාර සංවර්ධන දිස්ත්‍රික් කාර්යාලය,", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: "සමුපකාර සංවර්ධන දිස්ත්‍රික් කාර්යාලය,", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -822,7 +360,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.RIGHT,
 //                           spacing: { before: 600, after: 100 },
-//                           children: [new TextRun({ text: "...................................................", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: "...................................................", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -839,7 +377,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.LEFT,
 //                           spacing: { before: 0, after: 100 },
-//                           children: [new TextRun({ text: ".....................................................", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: ".....................................................", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -851,7 +389,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.RIGHT,
 //                           spacing: { before: 0, after: 100 },
-//                           children: [new TextRun({ text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: "සමුපකාර සංවර්ධන සහකාර කොමසාරිස් /", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -868,7 +406,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.LEFT,
 //                           spacing: { before: 0, after: 100 },
-//                           children: [new TextRun({ text: districtName + ".", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: districtName + ".", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -880,7 +418,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.RIGHT,
 //                           spacing: { before: 0, after: 100 },
-//                           children: [new TextRun({ text: "නියෝජ්‍ය කොමසාරිස්.", font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: "නියෝජ්‍ය කොමසාරිස්.", font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -897,7 +435,7 @@
 //                         new Paragraph({
 //                           alignment: AlignmentType.LEFT,
 //                           spacing: { before: 300, after: 100 },
-//                           children: [new TextRun({ text: `දිනය : ${dateStr}`, font: "Iskoola Pota", size: 22 })],
+//                           children: [new TextRun({ text: `දිනය : ${dateStr}`, font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" }, size: 22 })],
 //                         }),
 //                       ],
 //                     }),
@@ -919,7 +457,7 @@
 //               children: [
 //                 new TextRun({
 //                   text: "* ආරවුලේ එක් පාර්ශවයක් ඇපකරුවෙකු නොවන (අ) වගන්තිය කපා හරින්න. මෙහි සම්පූර්ණ නම් සඳහන් කරන්න.",
-//                   font: "Iskoola Pota",
+//                   font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" },
 //                   size: 20,
 //                 }),
 //               ],
@@ -932,25 +470,11 @@
 //               children: [
 //                 new TextRun({
 //                   text: "මෙහි පැමිණිලිකරුගේ හෝ විත්තිකරුගේ තත්වය දක්වන්න. එනම් ලියාපදිංචි කරන ලද සමිතියක් හෝ හිටපු සාමාජිකයෙකු හෝ හිටපු / මියගිය / සාමාජිකයෙකු වෙනුවෙන් ඉල්ලන්නෙකු හෝ හිටපු කාරක සභාව නිලධාරියෙකු සේවකයෙකු හෝ මියගිය නිලධාරියෙකු / සේවකයෙකු නීත්‍යනුකූල නියෝජිතයෙකු / උරුමක්කාරයෙකු / බලා වයස්කාරයෙකු උරුමක්කරයෙකුගේ භාරකාරයෙකු හෝ / යන වගද ) යම් පාර්ශවයක් ඈවරකරුවෙකු වන විට ලියාපදිංචි වන විට ලියාපදිංචි කළ සමිතියක............................................................................ ඈවරකරුවෙකු යනුවෙන්ද සඳහන් කළ යුතුය.",
-//                   font: "Iskoola Pota",
+//                   font: { ascii: "Iskoola Pota", eastAsia: "Iskoola Pota", hAnsi: "Iskoola Pota", cs: "Iskoola Pota" },
 //                   size: 20,
 //                 }),
 //               ],
 //             }),
-
-//             // ── BOTTOM BORDER ──
-//             // new Paragraph({
-//             //   border: {
-//             //     top: {
-//             //       color: "000000",
-//             //       space: 1,
-//             //       style: BorderStyle.SINGLE,
-//             //       size: 24,
-//             //     },
-//             //   },
-//             //   spacing: { before: 200, after: 0 },
-//             //   children: [],
-//             // }),
 //           ],
 //         },
 //       ],
@@ -973,8 +497,6 @@
 //     alert("ලිපිය නිර්මාණය කිරීමේදී දෝෂයක් ඇතිවිය: " + error.message);
 //   }
 // };
-
-
 
 //   const getStatusBadge = (borrower) => {
 //     if (!borrower.documentDeficienciesChecked) {
@@ -999,403 +521,6 @@
 //     }
 //     return <span className="badge bg-primary">පවරා ඇත</span>;
 //   };
-
-//   //  NEW: Decision View Modal Component
-//   // const DecisionViewModal = ({ show, onClose, borrower }) => {
-//   //   if (!show || !borrower || !borrower.arbitrationDecision) return null;
-
-//   //   const originalLoanAmount = parseFloat(borrower.loanAmount || 0);
-//   //   const originalInterest = parseFloat(borrower.interest || 0);
-//   //   const proposedLoanBalance = parseFloat(borrower.proposedLoanBalance || 0);
-//   //   const proposedLoanInterest = parseFloat(borrower.proposedLoanInterest || 0);
-
-//   //   const loanReduction = originalLoanAmount - proposedLoanBalance;
-//   //   const interestReduction = originalInterest - proposedLoanInterest;
-
-//   //   return (
-//   //     <>
-//   //       <div
-//   //         className="modal-backdrop show"
-//   //         style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}
-//   //         onClick={onClose}
-//   //       ></div>
-//   //       <div
-//   //         className="modal show d-block"
-//   //         style={{ zIndex: 1055 }}
-//   //         tabIndex="-1"
-//   //       >
-//   //         <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-//   //           <div className="modal-content" style={{ borderRadius: "12px" }}>
-//   //             <div
-//   //               className="modal-header text-white"
-//   //               style={{
-//   //                 background:
-//   //                   "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-//   //                 borderRadius: "12px 12px 0 0",
-//   //               }}
-//   //             >
-//   //               <h5 className="modal-title fw-bold">
-//   //                 <FileText size={20} className="me-2" />
-//   //                 තීරක තීන්දුව - {borrower.borrowerName}
-//   //               </h5>
-//   //               <button
-//   //                 type="button"
-//   //                 className="btn-close btn-close-white"
-//   //                 onClick={onClose}
-//   //               ></button>
-//   //             </div>
-
-//   //             <div className="modal-body p-4">
-//   //               {/* Borrower Basic Info */}
-//   //               <div
-//   //                 className="alert alert-info mb-3"
-//   //                 style={{ borderRadius: "8px" }}
-//   //               >
-//   //                 <div className="row g-2">
-//   //                   <div className="col-md-6">
-//   //                     <small className="text-muted d-block">නම:</small>
-//   //                     <strong>{borrower.borrowerName}</strong>
-//   //                   </div>
-//   //                   <div className="col-md-6">
-//   //                     <small className="text-muted d-block">ණය අංකය:</small>
-//   //                     <strong>{borrower.loanNumber}</strong>
-//   //                   </div>
-//   //                   <div className="col-md-6">
-//   //                     <small className="text-muted d-block">තීරක අංකය:</small>
-//   //                     <strong className="text-danger">
-//   //                       {borrower.arbitrationNumber}
-//   //                     </strong>
-//   //                   </div>
-//   //                   <div className="col-md-6">
-//   //                     <small className="text-muted d-block">
-//   //                       තීරක නිලධාරි:
-//   //                     </small>
-//   //                     <strong>{borrower.assignedOfficerName || "-"}</strong>
-//   //                   </div>
-//   //                 </div>
-//   //               </div>
-
-//   //               {/* Decision Dates */}
-//   //               <div className="row g-3 mb-3">
-//   //                 <div className="col-md-6">
-//   //                   <div className="card border-primary">
-//   //                     <div className="card-body p-3">
-//   //                       <small className="text-muted d-block mb-1">
-//   //                         <Calendar size={14} className="me-1" />
-//   //                         තීරණ දුන් දිනය
-//   //                       </small>
-//   //                       <div className="fw-bold text-primary">
-//   //                         {borrower.decisionDate
-//   //                           ? new Date(
-//   //                               borrower.decisionDate,
-//   //                             ).toLocaleDateString("si-LK", {
-//   //                               year: "numeric",
-//   //                               month: "long",
-//   //                               day: "numeric",
-//   //                             })
-//   //                           : "-"}
-//   //                       </div>
-//   //                     </div>
-//   //                   </div>
-//   //                 </div>
-//   //                 <div className="col-md-6">
-//   //                   <div className="card border-danger">
-//   //                     <div className="card-body p-3">
-//   //                       <small className="text-muted d-block mb-1">
-//   //                         <Calendar size={14} className="me-1" />
-//   //                         අභියාචනය කල යුතු දිනය
-//   //                       </small>
-//   //                       <div className="fw-bold text-danger">
-//   //                         {borrower.appealDueDate
-//   //                           ? new Date(
-//   //                               borrower.appealDueDate,
-//   //                             ).toLocaleDateString("si-LK", {
-//   //                               year: "numeric",
-//   //                               month: "long",
-//   //                               day: "numeric",
-//   //                             })
-//   //                           : "-"}
-//   //                       </div>
-//   //                     </div>
-//   //                   </div>
-//   //                 </div>
-//   //               </div>
-
-//   //               {/* Original vs Proposed Amounts */}
-//   //               <div
-//   //                 className="card mb-3 border-0 shadow-sm"
-//   //                 style={{ borderRadius: "8px" }}
-//   //               >
-//   //                 <div
-//   //                   className="card-header bg-gradient text-white"
-//   //                   style={{
-//   //                     background:
-//   //                       "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-//   //                   }}
-//   //                 >
-//   //                   <h6 className="mb-0 fw-bold">
-//   //                     <DollarSign size={16} className="me-2" />
-//   //                     මූල්‍ය සාරාංශය
-//   //                   </h6>
-//   //                 </div>
-//   //                 <div className="card-body">
-//   //                   <div className="table-responsive">
-//   //                     <table className="table table-borderless mb-0">
-//   //                       <thead style={{ backgroundColor: "#f8f9fa" }}>
-//   //                         <tr>
-//   //                           <th>විස්තර</th>
-//   //                           <th className="text-end">මුල් මුදල</th>
-//   //                           <th className="text-end">ප්‍රදානිත මුදල</th>
-//   //                           <th className="text-end">අඩු කිරීම</th>
-//   //                         </tr>
-//   //                       </thead>
-//   //                       <tbody>
-//   //                         <tr>
-//   //                           <td className="fw-semibold">ණය ශේෂය</td>
-//   //                           <td className="text-end fw-bold text-primary">
-//   //                             රු.{" "}
-//   //                             {originalLoanAmount.toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end fw-bold text-success">
-//   //                             රු.{" "}
-//   //                             {proposedLoanBalance.toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end">
-//   //                             {loanReduction > 0 ? (
-//   //                               <span className="badge bg-success">
-//   //                                 <TrendingDown size={12} className="me-1" />
-//   //                                 රු.{" "}
-//   //                                 {loanReduction.toLocaleString("si-LK", {
-//   //                                   minimumFractionDigits: 2,
-//   //                                 })}
-//   //                               </span>
-//   //                             ) : (
-//   //                               <span className="text-muted">-</span>
-//   //                             )}
-//   //                           </td>
-//   //                         </tr>
-//   //                         <tr>
-//   //                           <td className="fw-semibold">පොළිය</td>
-//   //                           <td className="text-end fw-bold text-warning">
-//   //                             රු.{" "}
-//   //                             {originalInterest.toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end fw-bold text-success">
-//   //                             රු.{" "}
-//   //                             {proposedLoanInterest.toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end">
-//   //                             {interestReduction > 0 ? (
-//   //                               <span className="badge bg-success">
-//   //                                 <TrendingDown size={12} className="me-1" />
-//   //                                 රු.{" "}
-//   //                                 {interestReduction.toLocaleString("si-LK", {
-//   //                                   minimumFractionDigits: 2,
-//   //                                 })}
-//   //                               </span>
-//   //                             ) : (
-//   //                               <span className="text-muted">-</span>
-//   //                             )}
-//   //                           </td>
-//   //                         </tr>
-//   //                         {borrower.caseFees &&
-//   //                           parseFloat(borrower.caseFees) > 0 && (
-//   //                             <tr>
-//   //                               <td className="fw-semibold">නඩු ගාස්තු</td>
-//   //                               <td className="text-end">-</td>
-//   //                               <td className="text-end fw-bold text-info">
-//   //                                 රු.{" "}
-//   //                                 {parseFloat(borrower.caseFees).toLocaleString(
-//   //                                   "si-LK",
-//   //                                   { minimumFractionDigits: 2 },
-//   //                                 )}
-//   //                               </td>
-//   //                               <td className="text-end">-</td>
-//   //                             </tr>
-//   //                           )}
-//   //                         <tr
-//   //                           style={{
-//   //                             backgroundColor: "#f0f9ff",
-//   //                             borderTop: "2px solid #ddd",
-//   //                           }}
-//   //                         >
-//   //                           <td className="fw-bold">මුළු මුදල</td>
-//   //                           <td className="text-end fw-bold text-danger fs-5">
-//   //                             රු.{" "}
-//   //                             {(
-//   //                               originalLoanAmount + originalInterest
-//   //                             ).toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end fw-bold text-success fs-5">
-//   //                             රු.{" "}
-//   //                             {parseFloat(
-//   //                               borrower.proposedTotalAmount || 0,
-//   //                             ).toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </td>
-//   //                           <td className="text-end">
-//   //                             {loanReduction + interestReduction > 0 ? (
-//   //                               <span className="badge bg-success fs-6">
-//   //                                 <TrendingDown size={14} className="me-1" />
-//   //                                 රු.{" "}
-//   //                                 {(
-//   //                                   loanReduction + interestReduction
-//   //                                 ).toLocaleString("si-LK", {
-//   //                                   minimumFractionDigits: 2,
-//   //                                 })}
-//   //                               </span>
-//   //                             ) : (
-//   //                               <span className="text-muted">-</span>
-//   //                             )}
-//   //                           </td>
-//   //                         </tr>
-//   //                       </tbody>
-//   //                     </table>
-//   //                   </div>
-//   //                 </div>
-//   //               </div>
-
-//   //               {/* Forward Interest */}
-//   //               {(borrower.forwardInterest || borrower.forwardInterestRate) && (
-//   //                 <div
-//   //                   className="card mb-3 border-0 shadow-sm"
-//   //                   style={{ borderRadius: "8px" }}
-//   //                 >
-//   //                   <div className="card-header bg-success text-white">
-//   //                     <h6 className="mb-0 fw-bold">
-//   //                       <Percent size={16} className="me-2" />
-//   //                       ඉදිරියට පොළිය
-//   //                     </h6>
-//   //                   </div>
-//   //                   <div className="card-body">
-//   //                     <div className="row">
-//   //                       {borrower.forwardInterest && (
-//   //                         <div className="col-md-6">
-//   //                           <small className="text-muted d-block mb-1">
-//   //                             ඉදිරියට පොළිය:
-//   //                           </small>
-//   //                           <div className="fw-bold fs-5 text-success">
-//   //                             රු.{" "}
-//   //                             {parseFloat(
-//   //                               borrower.forwardInterest,
-//   //                             ).toLocaleString("si-LK", {
-//   //                               minimumFractionDigits: 2,
-//   //                             })}
-//   //                           </div>
-//   //                         </div>
-//   //                       )}
-//   //                       {borrower.forwardInterestRate && (
-//   //                         <div className="col-md-6">
-//   //                           <small className="text-muted d-block mb-1">
-//   //                             ඉදිරියට පොළී අනුපාතය:
-//   //                           </small>
-//   //                           <div className="fw-bold fs-5 text-success">
-//   //                             {borrower.forwardInterestRate}%
-//   //                           </div>
-//   //                         </div>
-//   //                       )}
-//   //                     </div>
-//   //                   </div>
-//   //                 </div>
-//   //               )}
-
-//   //               {/* Deductions */}
-//   //               {(borrower.deductionsFromLoanAmount ||
-//   //                 borrower.deductionsFromInterestAmount) && (
-//   //                 <div
-//   //                   className="alert alert-warning mb-3"
-//   //                   style={{ borderRadius: "8px" }}
-//   //                 >
-//   //                   <h6 className="fw-bold mb-3">
-//   //                     <TrendingDown size={16} className="me-2" />
-//   //                     ප්‍රදානයේදී කපහැරීම්
-//   //                   </h6>
-//   //                   <div className="row">
-//   //                     {borrower.deductionsFromLoanAmount && (
-//   //                       <div className="col-md-6">
-//   //                         <small className="d-block mb-1">ණය මුදලෙන්:</small>
-//   //                         <strong className="fs-5">
-//   //                           රු.{" "}
-//   //                           {parseFloat(
-//   //                             borrower.deductionsFromLoanAmount,
-//   //                           ).toLocaleString("si-LK", {
-//   //                             minimumFractionDigits: 2,
-//   //                           })}
-//   //                         </strong>
-//   //                       </div>
-//   //                     )}
-//   //                     {borrower.deductionsFromInterestAmount && (
-//   //                       <div className="col-md-6">
-//   //                         <small className="d-block mb-1">පොලියෙන්:</small>
-//   //                         <strong className="fs-5">
-//   //                           රු.{" "}
-//   //                           {parseFloat(
-//   //                             borrower.deductionsFromInterestAmount,
-//   //                           ).toLocaleString("si-LK", {
-//   //                             minimumFractionDigits: 2,
-//   //                           })}
-//   //                         </strong>
-//   //                       </div>
-//   //                     )}
-//   //                   </div>
-//   //                 </div>
-//   //               )}
-
-//   //               {/* Decision Text */}
-//   //               <div
-//   //                 className="card border-0 shadow-sm"
-//   //                 style={{ borderRadius: "8px" }}
-//   //               >
-//   //                 <div className="card-header bg-secondary text-white">
-//   //                   <h6 className="mb-0 fw-bold">
-//   //                     <FileText size={16} className="me-2" />
-//   //                     තීන්දුව / සටහන්
-//   //                   </h6>
-//   //                 </div>
-//   //                 <div className="card-body">
-//   //                   <div
-//   //                     className="p-3 bg-light rounded"
-//   //                     style={{
-//   //                       whiteSpace: "pre-wrap",
-//   //                       maxHeight: "300px",
-//   //                       overflowY: "auto",
-//   //                       fontSize: "14px",
-//   //                       lineHeight: "1.8",
-//   //                     }}
-//   //                   >
-//   //                     {borrower.arbitrationDecision}
-//   //                   </div>
-//   //                 </div>
-//   //               </div>
-//   //             </div>
-
-//   //             <div className="modal-footer bg-light border-top">
-//   //               <button
-//   //                 type="button"
-//   //                 className="btn btn-secondary"
-//   //                 onClick={onClose}
-//   //               >
-//   //                 <X size={16} className="me-2" />
-//   //                 වසන්න
-//   //               </button>
-//   //             </div>
-//   //           </div>
-//   //         </div>
-//   //       </div>
-//   //     </>
-//   //   );
-//   // };
 
 //   if (loading) {
 //     return (
@@ -1589,7 +714,7 @@
 //                         </td>
 //                         <td>{getStatusBadge(borrower)}</td>
 
-//                         {/* ⭐ Decision Column - Clickable */}
+//                         {/* Decision Column - Clickable */}
 //                         <td className="text-center">
 //                           {borrower.arbitrationDecision ? (
 //                             <button
@@ -1674,7 +799,7 @@
 //           }}
 //         />
 
-//         {/* ⭐ NEW: Decision View Modal */}
+//         {/* Decision View Modal */}
 //         <DecisionViewModal
 //           show={showDecisionViewModal}
 //           onClose={() => {
@@ -1795,7 +920,7 @@
 //                           {borrower.assignedOfficerName || "-"}
 //                         </td>
 
-//                         {/* ⭐ Assignment Letter Column */}
+//                         {/* Assignment Letter Column */}
 //                         <td className="text-center">
 //                           {borrower.assignedOfficerId &&
 //                           borrower.arbitrationNumber ? (
@@ -1818,7 +943,7 @@
 //                           )}
 //                         </td>
 
-//                         {/* ⭐ Decision Column - Clickable */}
+//                         {/* Decision Column - Clickable */}
 //                         <td className="text-center">
 //                           {borrower.arbitrationDecision ? (
 //                             <button
@@ -1983,7 +1108,7 @@
 //         }}
 //       />
 
-//       {/* ⭐ NEW: Decision View Modal */}
+//       {/* Decision View Modal */}
 //       <DecisionViewModal
 //         show={showDecisionViewModal}
 //         onClose={() => {
@@ -1997,8 +1122,6 @@
 // };
 
 // export default DistrictSubmissionsPage;
-
-
 
 
 
@@ -2066,6 +1189,10 @@ const DistrictSubmissionsPage = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPaymentStatus, setFilterPaymentStatus] = useState("all");
   const [filterDeficiencyStatus, setFilterDeficiencyStatus] = useState("all");
+
+  // District Admin search state (search by date, society, name, loan no, arbitration no, officer)
+  const [districtSearchTerm, setDistrictSearchTerm] = useState("");
+  const [districtFilterStatus, setDistrictFilterStatus] = useState("all");
 
   const isProvincialAdmin = user?.roles?.includes("PROVINCIAL_ADMIN");
 
@@ -2210,6 +1337,67 @@ const DistrictSubmissionsPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Filters the district-admin submissions (grouped by society) by search term
+  // (date, society name, borrower name, loan no, arbitration no, officer name)
+  // and by a simple status filter. A society card is kept only if it still
+  // has at least one matching borrower.
+  const getFilteredDistrictSubmissions = () => {
+    let result = submissions;
+
+    if (districtSearchTerm.trim()) {
+      const search = districtSearchTerm.trim().toLowerCase();
+      result = result
+        .map((submission) => {
+          const dateStr = submission.approvedDate
+            ? new Date(submission.approvedDate).toLocaleDateString("si-LK")
+            : "";
+          const isoDateStr = submission.approvedDate
+            ? new Date(submission.approvedDate).toISOString().slice(0, 10)
+            : "";
+
+          const matchingBorrowers = submission.borrowers.filter(
+            (borrower) =>
+              borrower.borrowerName?.toLowerCase().includes(search) ||
+              borrower.loanNumber?.toLowerCase().includes(search) ||
+              borrower.arbitrationNumber?.toLowerCase().includes(search) ||
+              borrower.assignedOfficerName?.toLowerCase().includes(search) ||
+              submission.societyName?.toLowerCase().includes(search) ||
+              dateStr.includes(search) ||
+              isoDateStr.includes(search),
+          );
+
+          return { ...submission, borrowers: matchingBorrowers };
+        })
+        .filter((submission) => submission.borrowers.length > 0);
+    }
+
+    if (districtFilterStatus !== "all") {
+      result = result
+        .map((submission) => {
+          const matchingBorrowers = submission.borrowers.filter((b) => {
+            switch (districtFilterStatus) {
+              case "pending":
+                return !b.arbitrationFeePaid && !b.documentDeficienciesChecked;
+              case "deficiency-checked":
+                return b.documentDeficienciesChecked && !b.arbitrationFeePaid;
+              case "assigned":
+                return b.assignedOfficerId && b.status !== "decision-given";
+              case "decision":
+                return b.status === "decision-given";
+              case "not-assigned":
+                return !b.assignedOfficerId;
+              default:
+                return true;
+            }
+          });
+          return { ...submission, borrowers: matchingBorrowers };
+        })
+        .filter((submission) => submission.borrowers.length > 0);
+    }
+
+    return result;
   };
 
   const generateAssignmentLetter = async (borrower, submissionId) => {
@@ -2828,6 +2016,60 @@ const DistrictSubmissionsPage = () => {
         මෙම ඉදිරිපත් කිරීම් සමිති විසින් අනුමත කර ඇත
       </div>
 
+      {/* District search & filter */}
+      <div
+        className="card mb-4 border-0 shadow-sm"
+        style={{ borderRadius: "15px" }}
+      >
+        <div className="card-body">
+          <div className="row g-3">
+            <div className="col-md-8">
+              <div className="input-group">
+                <span
+                  className="input-group-text"
+                  style={{ borderRadius: "10px 0 0 10px" }}
+                >
+                  <Search size={18} />
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="සමිතිය, නම, ණය අංකය, තීරක අංකය, නිලධාරියා හෝ දිනය අනුව සොයන්න..."
+                  value={districtSearchTerm}
+                  onChange={(e) => setDistrictSearchTerm(e.target.value)}
+                  style={{ borderRadius: "0 10px 10px 0" }}
+                />
+                {districtSearchTerm && (
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={() => setDistrictSearchTerm("")}
+                    title="සෙවුම හිස් කරන්න"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="col-md-4">
+              <select
+                className="form-select"
+                value={districtFilterStatus}
+                onChange={(e) => setDistrictFilterStatus(e.target.value)}
+                style={{ borderRadius: "10px" }}
+              >
+                <option value="all">සියලු තත්වයන්</option>
+                <option value="pending">පරීක්ෂා ඉතිරිව ඇත</option>
+                <option value="deficiency-checked">පරීක්ෂා සම්පූර්ණ</option>
+                <option value="not-assigned">නිලධාරි වෙත පවරා නැත</option>
+                <option value="assigned">තීරක නිලධාරීන්ට පවරා ඇත</option>
+                <option value="decision">තීරණ ලබා දී ඇත</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {submissions.length === 0 ? (
         <div
           className="alert alert-info d-flex align-items-center"
@@ -2836,8 +2078,16 @@ const DistrictSubmissionsPage = () => {
           <AlertCircle size={18} className="me-2" />
           සමිතිවලින් තවමත් අනුමත කළ ඉදිරිපත් කිරීම් නොමැත
         </div>
+      ) : getFilteredDistrictSubmissions().length === 0 ? (
+        <div
+          className="alert alert-info d-flex align-items-center"
+          style={{ borderRadius: "10px" }}
+        >
+          <AlertCircle size={18} className="me-2" />
+          සෙවුම් ප්‍රතිඵල හමු නොවීය
+        </div>
       ) : (
-        submissions.map((submission) => (
+        getFilteredDistrictSubmissions().map((submission) => (
           <div
             key={submission.id}
             className="card mb-4 shadow-sm border-0"
